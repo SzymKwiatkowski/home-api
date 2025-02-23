@@ -1,8 +1,8 @@
 ﻿namespace HomeApi.Domain.Exceptions;
 
-public class UnsupportedColourException : Exception
+public class UnsupportedCurrencyException : Exception
 {
-    public UnsupportedColourException(string code)
+    public UnsupportedCurrencyException(string code)
         : base($"Colour \"{code}\" is unsupported.")
     {
     }

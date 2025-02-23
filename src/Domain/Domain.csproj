@@ -8,6 +8,11 @@
   <ItemGroup>
     <PackageReference Include="Ardalis.SmartEnum" />
     <PackageReference Include="MediatR" />
+    <PackageReference Include="Throw" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\Payments\ValueObjects\" />
   </ItemGroup>
 
 </Project>

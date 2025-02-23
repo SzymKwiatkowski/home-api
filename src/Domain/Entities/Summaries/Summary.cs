@@ -1,6 +1,8 @@
+using HomeApi.Domain.Entities.Summaries;
+
 namespace HomeApi.Domain.Entities;
 
-public class Summary
+public class Summary : BaseAuditableEntity<SummaryId>
 {
     
 }
