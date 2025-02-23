@@ -6,17 +6,13 @@ namespace HomeApi.Domain.Entities.IncomeKinds;
 
 public class IncomeKind : BaseAuditableEntity<IncomeKindId>
 {
-    private IncomeKind()
-    {
-    }
+    private IncomeKind() { }
 
     public SeverityKind DefaultSeverity { get; private set; } = null!;
 
     public Name Name { get; private set; } = null!;
 
-    public static IncomeKind Create(SeverityKind severityKind,
-                                    Name name,
-                                    IncomeKindId? id = null)
+    public static IncomeKind Create(SeverityKind severityKind, Name name, IncomeKindId? id = null)
     {
         severityKind.ThrowIfNull();
         name.ThrowIfNull();

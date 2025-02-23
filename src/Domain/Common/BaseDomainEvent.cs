@@ -2,6 +2,4 @@
 
 namespace HomeApi.Domain.Common;
 
-public abstract class BaseDomainEvent : INotification
-{
-}
+public abstract class BaseDomainEvent : INotification { }

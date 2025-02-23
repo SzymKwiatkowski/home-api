@@ -6,9 +6,7 @@ namespace HomeApi.Domain.Entities.Incomes;
 
 public class Income : BaseAuditableEntity<IncomeId>
 {
-    private Income()
-    {
-    }
+    private Income() { }
 
     public Name Name { get; private set; } = null!;
 
@@ -20,7 +18,7 @@ public class Income : BaseAuditableEntity<IncomeId>
 
     public DateTimeOffset Date { get; private set; }
 
-    public Description? Description { get; private set; } = null!;
+    public Description? Description { get; private set; }
 
     public IsPeriodic IsPeriodic { get; private set; } = null!;
 
@@ -32,9 +30,9 @@ public class Income : BaseAuditableEntity<IncomeId>
         SeverityKind severity,
         Amount amount,
         DateTimeOffset date,
-        Description description,
         PeriodDefinition? periodDefinition = null,
-        IncomeId? id = null)
+        IncomeId? id = null
+    )
     {
         return new Income
         {
@@ -44,9 +42,9 @@ public class Income : BaseAuditableEntity<IncomeId>
             Severity = severity,
             Amount = amount,
             Date = date,
-            Description = description,
+            Description = null,
             IsPeriodic = periodDefinition is null ? IsPeriodic.False : IsPeriodic.True,
-            PeriodDefinition = periodDefinition
+            PeriodDefinition = periodDefinition,
         };
     }
 
@@ -56,7 +54,8 @@ public class Income : BaseAuditableEntity<IncomeId>
         SeverityKind? severity,
         Amount? amount,
         DateTimeOffset? date,
-        Description? description)
+        Description? description
+    )
     {
         Name = name ?? Name;
         PaymentKindId = paymentKindId ?? PaymentKindId;

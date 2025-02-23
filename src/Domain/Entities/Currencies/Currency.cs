@@ -26,7 +26,7 @@ public class Currency : BaseAuditableEntity<CurrencyId>
             Id = id,
             Code = code,
             Symbol = symbol,
-            Name = name
+            Name = name,
         };
     }
 }

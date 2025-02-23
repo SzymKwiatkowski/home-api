@@ -19,9 +19,7 @@ public class Event : BaseAuditableEntity<EventId>
 
     public DateTimeOffset Date { get; private set; }
 
-    private Event()
-    {
-    }
+    private Event() { }
 
     public static Event Create(
         EventKindId eventKindId,
@@ -30,7 +28,8 @@ public class Event : BaseAuditableEntity<EventId>
         DateTimeOffset date,
         Description description,
         PeriodDefinition? periodDefinition = null,
-        EventId? id = null)
+        EventId? id = null
+    )
     {
         return new Event
         {
@@ -41,7 +40,7 @@ public class Event : BaseAuditableEntity<EventId>
             Date = date,
             Description = description,
             IsPeriodic = periodDefinition is null ? IsPeriodic.False : IsPeriodic.True,
-            PeriodDefinition = periodDefinition
+            PeriodDefinition = periodDefinition,
         };
     }
 }

@@ -2,7 +2,8 @@
 
 namespace HomeApi.Domain.Common;
 
-public abstract class BaseEntity<T> : IEntity where T : IStronglyTypedId
+public abstract class BaseEntity<T> : IEntity
+    where T : IStronglyTypedId
 {
     public T? Id { get; set; }
 

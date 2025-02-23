@@ -6,17 +6,13 @@ namespace HomeApi.Domain.Entities.Events;
 
 public class EventKind : BaseAuditableEntity<EventKindId>
 {
-    private EventKind()
-    {
-    }
+    private EventKind() { }
 
     public SeverityKind DefaultSeverity { get; private set; } = null!;
 
     public Name Name { get; private set; } = null!;
 
-    public static EventKind Create(SeverityKind severityKind,
-                                   Name name,
-                                   EventKindId? id = null)
+    public static EventKind Create(SeverityKind severityKind, Name name, EventKindId? id = null)
     {
         severityKind.ThrowIfNull();
         name.ThrowIfNull();

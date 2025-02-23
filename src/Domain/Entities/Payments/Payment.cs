@@ -6,9 +6,7 @@ namespace HomeApi.Domain.Entities;
 
 public class Payment : BaseAuditableEntity<PaymentId>
 {
-    private Payment()
-    {
-    }
+    private Payment() { }
 
     public Name Name { get; private set; } = null!;
 
@@ -20,7 +18,7 @@ public class Payment : BaseAuditableEntity<PaymentId>
 
     public DateTimeOffset Date { get; private set; }
 
-    public Description Description { get; private set; } = null!;
+    public Description? Description { get; private set; } = null!;
 
     public IsPeriodic IsPeriodic { get; private set; } = null!;
 
@@ -32,9 +30,9 @@ public class Payment : BaseAuditableEntity<PaymentId>
         SeverityKind severity,
         Amount amount,
         DateTimeOffset date,
-        Description description,
         PeriodDefinition? periodDefinition = null,
-        PaymentId? id = null)
+        PaymentId? id = null
+    )
     {
         return new Payment
         {
@@ -44,9 +42,9 @@ public class Payment : BaseAuditableEntity<PaymentId>
             Severity = severity,
             Amount = amount,
             Date = date,
-            Description = description,
+            Description = null,
             IsPeriodic = periodDefinition is null ? IsPeriodic.False : IsPeriodic.True,
-            PeriodDefinition = periodDefinition
+            PeriodDefinition = periodDefinition,
         };
     }
 }

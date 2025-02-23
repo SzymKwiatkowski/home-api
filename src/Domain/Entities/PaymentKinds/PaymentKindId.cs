@@ -2,9 +2,7 @@ namespace HomeApi.Domain.Entities.PaymentKinds;
 
 public record PaymentKindId : StronglyTypedId<int>
 {
-    private PaymentKindId()
-    {
-    }
+    private PaymentKindId() { }
 
     public new int Value { get; private set; }
 

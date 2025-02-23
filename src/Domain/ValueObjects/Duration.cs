@@ -5,17 +5,11 @@ public class Duration : ValueObject
     public DateTimeOffset Start { get; private set; }
     public DateTimeOffset End { get; private set; }
 
-    private Duration()
-    {
-    }
+    private Duration() { }
 
     public static Duration Create(DateTimeOffset start, DateTimeOffset end)
     {
-        return new Duration
-        {
-            Start = start,
-            End = end
-        };
+        return new Duration { Start = start, End = end };
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

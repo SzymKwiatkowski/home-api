@@ -4,9 +4,7 @@ namespace HomeApi.Domain.ValueObjects;
 
 public class Amount : ValueObject
 {
-    private Amount()
-    {
-    }
+    private Amount() { }
 
     public decimal Value { get; private set; }
 

@@ -6,16 +6,11 @@ public class Name : ValueObject
 {
     public string Value { get; private set; } = null!;
 
-    private Name()
-    {
-    }
+    private Name() { }
 
     public static Name Create(string value)
     {
-        return new Name
-        {
-            Value = value
-        };
+        return new Name { Value = value };
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

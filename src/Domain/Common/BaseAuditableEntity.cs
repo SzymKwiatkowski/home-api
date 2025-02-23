@@ -1,6 +1,7 @@
 ﻿namespace HomeApi.Domain.Common;
 
-public abstract class BaseAuditableEntity<T> : BaseEntity<T> where T : IStronglyTypedId
+public abstract class BaseAuditableEntity<T> : BaseEntity<T>
+    where T : IStronglyTypedId
 {
     public DateTimeOffset Created { get; set; }
 

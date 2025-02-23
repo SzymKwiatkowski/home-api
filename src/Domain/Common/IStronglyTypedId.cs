@@ -1,5 +1,3 @@
 namespace HomeApi.Domain.Common;
 
-public interface IStronglyTypedId
-{
-}
+public interface IStronglyTypedId { }
