@@ -9,6 +9,6 @@ public static class CronExtensions
 
     public static bool IsValidSchedule(this string schedule) 
     {
-        return Regex.IsMatch(schedule, QuartzCronRegex);
+        return Regex.IsMatch(schedule, QuartzCronRegex, RegexOptions.None, TimeSpan.FromMilliseconds(100));
     }
 }
