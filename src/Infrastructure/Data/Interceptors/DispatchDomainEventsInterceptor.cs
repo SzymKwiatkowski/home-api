@@ -31,16 +31,17 @@ public class DispatchDomainEventsInterceptor : SaveChangesInterceptor
 
     public async Task DispatchDomainEvents(DbContext? context)
     {
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
-        var entities = context.ChangeTracker
-            .Entries<BaseEntity<IStronglyTypedId>>()
+        var entities = context
+            .ChangeTracker.Entries<BaseEntity<IStronglyTypedId>>()
             .Where(e => e.Entity.DomainEvents.Any())
             .Select(e => e.Entity);
 
-        var domainEvents = entities
-            .SelectMany(e => e.DomainEvents)
-            .ToList();
+        var domainEvents = entities.SelectMany(e => e.DomainEvents).ToList();
 
         entities.ToList().ForEach(e => e.ClearDomainEvents());
 
