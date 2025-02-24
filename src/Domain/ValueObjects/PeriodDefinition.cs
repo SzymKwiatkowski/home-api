@@ -11,7 +11,7 @@ public class PeriodDefinition : ValueObject
 
     public static PeriodDefinition Create(string value)
     {
-        value.Throw().IfFalse(v => v.IsValidSchedule(), "Invalid schedule format: {value}");
+        value.Throw().IfFalse(v => v.IsValidSchedule());
 
         return new PeriodDefinition { Value = value };
     }

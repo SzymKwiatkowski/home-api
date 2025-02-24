@@ -1,3 +1,5 @@
+using Throw;
+
 namespace HomeApi.Domain.ValueObjects;
 
 public class Description : ValueObject
@@ -8,6 +10,8 @@ public class Description : ValueObject
 
     public static Description Create(string value)
     {
+        value.ThrowIfNull();
+
         return new Description { Value = value };
     }
 

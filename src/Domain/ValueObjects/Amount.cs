@@ -1,4 +1,5 @@
 using System;
+using Throw;
 
 namespace HomeApi.Domain.ValueObjects;
 
@@ -10,10 +11,7 @@ public class Amount : ValueObject
 
     public static Amount Create(decimal value)
     {
-        if (value < 0)
-        {
-            throw new ArgumentException("Amount cannot be negative");
-        }
+        value.Throw().IfLessThan(0);
 
         return new Amount { Value = value };
     }

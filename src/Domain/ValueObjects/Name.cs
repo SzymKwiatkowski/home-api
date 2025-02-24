@@ -1,4 +1,5 @@
 using System;
+using Throw;
 
 namespace HomeApi.Domain.ValueObjects;
 
@@ -10,6 +11,9 @@ public class Name : ValueObject
 
     public static Name Create(string value)
     {
+        value.ThrowIfNull();
+        value.Throw().IfEmpty();
+
         return new Name { Value = value };
     }
 
