@@ -1,11 +1,8 @@
-using HomeApi.Domain.Entities;
 using HomeApi.Domain.Entities.Incomes;
 using HomeApi.Domain.Entities.Payments;
 using HomeApi.Domain.Entities.Summaries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Minerals.StringCases;
-using Guid = System.Guid;
 
 namespace HomeApi.Infrastructure.Data.Configurations;
 
@@ -29,8 +26,6 @@ public class SummariesConfiguration : IEntityTypeConfiguration<Summary>
                 j =>
                 {
                     j.ToTable("summaries_incomes");
-                    // j.Property<SummaryId>(nameof(SummaryId).ToSnakeCase());
-                    // j.Property<IncomeId>(nameof(IncomeId).ToSnakeCase());
                     j.HasOne(typeof(Summary)).WithMany().HasForeignKey(nameof(SummaryId));
                     j.HasOne(typeof(Income)).WithMany().HasForeignKey(nameof(IncomeId));
                     j.HasKey(nameof(SummaryId), nameof(IncomeId));
@@ -44,8 +39,6 @@ public class SummariesConfiguration : IEntityTypeConfiguration<Summary>
                 j =>
                 {
                     j.ToTable("summaries_payments");
-                    // j.Property<SummaryId>(nameof(SummaryId).ToSnakeCase());
-                    // j.Property<PaymentId>(nameof(PaymentId).ToSnakeCase());
                     j.HasOne(typeof(Summary)).WithMany().HasForeignKey(nameof(SummaryId));
                     j.HasOne(typeof(Payment)).WithMany().HasForeignKey(nameof(PaymentId));
                     j.HasKey(nameof(SummaryId), nameof(PaymentId));
