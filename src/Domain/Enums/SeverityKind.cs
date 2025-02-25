@@ -1,4 +1,3 @@
-using System;
 using Ardalis.SmartEnum;
 
 namespace HomeApi.Domain.Enums;

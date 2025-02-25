@@ -4,32 +4,20 @@ using HomeApi.Domain.ValueObjects;
 
 namespace HomeApi.Domain.Entities;
 
-public class Payment : BaseAuditableEntity<PaymentId>
+public class Payment : BaseCalendarEntity<PaymentId>
 {
     private Payment() { }
-
-    public Name Name { get; private set; } = null!;
 
     public Amount Amount { get; private set; } = null!;
 
     public PaymentKindId PaymentKindId { get; private set; } = null!;
-
-    public SeverityKind Severity { get; private set; } = null!;
-
-    public DateTimeOffset Date { get; private set; }
-
-    public Description? Description { get; private set; } = null!;
-
-    public IsPeriodic IsPeriodic { get; private set; } = null!;
-
-    public PeriodDefinition? PeriodDefinition { get; private set; }
 
     public static Payment Create(
         Name name,
         PaymentKindId paymentKindId,
         SeverityKind severity,
         Amount amount,
-        DateTimeOffset date,
+        Duration duration,
         PeriodDefinition? periodDefinition = null,
         PaymentId? id = null
     )
@@ -41,7 +29,7 @@ public class Payment : BaseAuditableEntity<PaymentId>
             PaymentKindId = paymentKindId,
             Severity = severity,
             Amount = amount,
-            Date = date,
+            Duration = duration,
             Description = null,
             IsPeriodic = periodDefinition is null ? IsPeriodic.False : IsPeriodic.True,
             PeriodDefinition = periodDefinition,

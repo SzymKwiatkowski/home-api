@@ -5,7 +5,7 @@ namespace HomeApi.Domain.Common;
 public abstract class BaseEntity<T> : IEntity
     where T : IStronglyTypedId
 {
-    public T? Id { get; set; }
+    public T? Id { get; protected set; }
 
     private readonly List<BaseDomainEvent> _domainEvents = new();
 
