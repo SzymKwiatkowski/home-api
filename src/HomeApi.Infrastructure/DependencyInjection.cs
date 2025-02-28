@@ -3,6 +3,7 @@ using HomeApi.Domain.Constants;
 using HomeApi.Domain.Entities.ApplicationUser;
 using HomeApi.Infrastructure.Data;
 using HomeApi.Infrastructure.Data.Interceptors;
+using HomeApi.Infrastructure.Extensions;
 using HomeApi.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,5 +54,13 @@ public static class DependencyInjection
         builder.Services.AddAuthorization(options =>
             options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator))
         );
+        
+        // Add services
+        builder.Services.AddSingletonServices();
+        builder.Services.AddScopedServices();
+        builder.Services.AddTransientServices();
+        
+        // Add quartz
+        builder.Services.AddQuartz();
     }
 }

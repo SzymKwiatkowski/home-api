@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Minerals.StringCases;
 
 namespace HomeApi.Web.Infrastructure;
 
@@ -6,12 +7,12 @@ public static class WebApplicationExtensions
 {
     public static RouteGroupBuilder MapGroup(this WebApplication app, EndpointGroupBase group)
     {
-        var groupName = group.GetType().Name;
+        var groupName = group.GetType().Name.ToLower();
 
         return app
             .MapGroup($"/api/{groupName}")
             .WithGroupName(groupName)
-            .WithTags(groupName);
+            .WithTags(groupName.ToPascalCase());
     }
 
     public static WebApplication MapEndpoints(this WebApplication app)

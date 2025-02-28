@@ -34,6 +34,12 @@ app.UseSwaggerUi(settings =>
     settings.DocumentPath = "/api/specification.json";
 });
 
+app.UseReDoc(options =>
+{
+    options.Path = "/api/redoc";
+    options.DocumentPath = "/api/specification.json";
+});
+
 
 app.UseExceptionHandler(options => { });
 
@@ -41,7 +47,7 @@ app.Map("/", () => Results.Redirect("/api"));
 
 app.MapEndpoints();
 
-app.Run();
+await app.RunAsync();
 
 namespace HomeApi.Web
 {
