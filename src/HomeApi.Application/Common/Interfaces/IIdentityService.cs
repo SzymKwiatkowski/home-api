@@ -1,4 +1,5 @@
-﻿using HomeApi.Application.Common.Models;
+﻿using CSharpFunctionalExtensions;
+using HomeApi.Application.Common.Models;
 
 namespace HomeApi.Application.Common.Interfaces;
 

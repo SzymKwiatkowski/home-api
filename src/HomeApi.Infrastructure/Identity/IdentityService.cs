@@ -1,9 +1,8 @@
+using CSharpFunctionalExtensions;
 using HomeApi.Application.Common.Interfaces;
-using HomeApi.Application.Common.Models;
 using HomeApi.Domain.Entities.ApplicationUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace HomeApi.Infrastructure.Identity;
 

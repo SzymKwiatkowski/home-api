@@ -1,5 +1,6 @@
 using HomeApi.Domain.Entities.PaymentKinds;
 using HomeApi.Domain.Enums;
+using HomeApi.Domain.Extensions;
 using HomeApi.Domain.ValueObjects;
 
 namespace HomeApi.Domain.Entities.Payments;
@@ -22,6 +23,8 @@ public class Payment : BaseCalendarEntity<PaymentId>
         PaymentId? id = null
     )
     {
+        GuardExtensions.Null(name, paymentKindId, severity, amount, duration);
+
         return new Payment
         {
             Id = id ?? PaymentId.New(),

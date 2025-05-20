@@ -1,5 +1,4 @@
 ﻿using HomeApi.Domain.Entities.ApplicationUser;
-using HomeApi.Infrastructure.Identity;
 
 namespace HomeApi.Web.Endpoints;
 
