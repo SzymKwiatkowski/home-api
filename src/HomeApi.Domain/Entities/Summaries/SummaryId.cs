@@ -1,3 +1,5 @@
+using MassTransit;
+
 namespace HomeApi.Domain.Entities.Summaries;
 
 public record SummaryId : StronglyTypedId<SummaryId, Guid>
@@ -13,6 +15,6 @@ public record SummaryId : StronglyTypedId<SummaryId, Guid>
 
     public static SummaryId New()
     {
-        return new SummaryId { Value = Guid.NewGuid() };
+        return new SummaryId { Value = NewId.NextGuid() };
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using MassTransit;
 
 namespace HomeApi.Domain.Entities.Incomes;
 
@@ -15,6 +16,6 @@ public record IncomeId : StronglyTypedId<IncomeId, Guid>
 
     public static IncomeId New()
     {
-        return new IncomeId { Value = Guid.NewGuid() };
+        return new IncomeId { Value = NewId.NextGuid() };
     }
 }

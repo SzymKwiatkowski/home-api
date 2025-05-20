@@ -10,6 +10,7 @@
     <PackageReference Include="Ardalis.SmartEnum" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Minerals.StringCases" />
+    <PackageReference Include="NewId" />
     <PackageReference Include="Throw" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
   </ItemGroup>

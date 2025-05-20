@@ -27,7 +27,9 @@ tab_width = 4
 
 # New line preferences
 end_of_line = crlf
+indent_style = space
 insert_final_newline = true
+max_line_length = 100
 
 #### .NET Coding Conventions ####
 [*.{cs,vb}]

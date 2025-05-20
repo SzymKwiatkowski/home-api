@@ -1,3 +1,5 @@
+using MassTransit;
+
 namespace HomeApi.Domain.Entities.Payments;
 
 public record PaymentId : StronglyTypedId<PaymentId, Guid>
@@ -11,6 +13,6 @@ public record PaymentId : StronglyTypedId<PaymentId, Guid>
 
     public static PaymentId New()
     {
-        return new PaymentId { Value = Guid.NewGuid() };
+        return new PaymentId { Value = NewId.NextGuid() };
     }
 }

@@ -1,3 +1,5 @@
+using MassTransit;
+
 namespace HomeApi.Domain.Entities.Events;
 
 public record EventId : StronglyTypedId<EventId, Guid>
@@ -11,6 +13,6 @@ public record EventId : StronglyTypedId<EventId, Guid>
 
     public static EventId New()
     {
-        return new EventId { Value = Guid.NewGuid() };
+        return new EventId { Value = NewId.NextGuid() };
     }
 };
