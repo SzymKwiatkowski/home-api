@@ -1,0 +1,5 @@
+{
+    "ConnectionStrings": {
+        "HomeApiDb": "Server=127.0.0.1;Port=5432;Database=TestDb;Username=admin;Password=password;"
+    }
+}

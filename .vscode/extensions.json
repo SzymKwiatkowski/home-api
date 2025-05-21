@@ -1,0 +1,18 @@
+{
+    // Recommended VS Code extensions for this C#/.NET project
+    "recommendations": [
+        "ms-dotnettools.csharp", // C# language support (OmniSharp)
+        "ms-dotnettools.vscode-dotnet-pack", // .NET SDK tooling
+        "eamodio.gitlens", // GitLens for Git superpowers
+        "editorconfig.editorconfig", // EditorConfig support
+        "esbenp.prettier-vscode", // Prettier code formatter (optional)
+        "streetsidesoftware.code-spell-checker", // Spell checker
+        "github.copilot", // GitHub Copilot AI assistant
+        "formulahendry.dotnet-test-explorer", // .NET Test Explorer,
+        "ms-dotnettools.csdevkit", // .NET DevKit
+        "csharpier.csharpier-vscode", // CSharpier for code formatting
+        "mhutchie.git-graph", // Git Graph for visualizing Git history
+        "sonarsource.sonarlint-vscode", // SonarLint for code quality and security analysis
+        "ms-vscode.csharp-extensions-pack", // C# Extensions Pack
+    ]
+}

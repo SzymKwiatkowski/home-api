@@ -1,0 +1,13 @@
+{
+    "dotnet.preferVisualStudioCodeFileSystemWatcher": true,
+    "editor.formatOnSave": true,
+    "[csharp]": {
+        "editor.defaultFormatter": "csharpier.csharpier-vscode"
+    },
+    "files.eol": "\r\n",
+    "sonarlint.connectedMode.project": {
+        "connectionId": "szymkwiatkowski",
+        "projectKey": "SzymKwiatkowski_home-api"
+    },
+    "dotnet-test-explorer.testProjectPath": "./tests/**/*Tests.@(csproj|vbproj|fsproj)"
+}

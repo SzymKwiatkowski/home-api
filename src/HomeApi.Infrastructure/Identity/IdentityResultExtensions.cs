@@ -1,4 +1,5 @@
-﻿using HomeApi.Application.Common.Models;
+﻿using CSharpFunctionalExtensions;
+using HomeApi.Application.Common.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace HomeApi.Infrastructure.Identity;
@@ -9,6 +10,8 @@ public static class IdentityResultExtensions
     {
         return result.Succeeded
             ? Result.Success()
-            : Result.Failure(result.Errors.Select(e => e.Description));
+            : Result.Failure(result.Errors
+                            .Select(x => x.Description)
+                            .Aggregate((i, j) => $"{i}; {j}"));
     }
 }
