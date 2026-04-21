@@ -1,6 +1,4 @@
 using HomeApi.Domain.Entities.IncomeKinds;
-using HomeApi.Domain.Entities.PaymentKinds;
-using HomeApi.Domain.Entities.Summaries;
 using HomeApi.Domain.Enums;
 using HomeApi.Domain.ValueObjects;
 
@@ -19,8 +17,7 @@ public class Income : BaseCalendarEntity<IncomeId>
         IncomeKindId incomeKindId,
         SeverityKind severity,
         Amount amount,
-        Duration duration,
-        PeriodDefinition? periodDefinition = null,
+        OccuredAtOnUtc occuredAtOnUtc,
         IncomeId? id = null
     )
     {
@@ -31,10 +28,8 @@ public class Income : BaseCalendarEntity<IncomeId>
             IncomeKindId = incomeKindId,
             Severity = severity,
             Amount = amount,
-            Duration = duration,
-            Description = null,
-            IsPeriodic = periodDefinition is null ? IsPeriodic.False : IsPeriodic.True,
-            PeriodDefinition = periodDefinition,
+            OccuredAtOnUtc = occuredAtOnUtc,
+            Description = null
         };
     }
 
@@ -43,7 +38,7 @@ public class Income : BaseCalendarEntity<IncomeId>
         IncomeKindId? incomeKindId,
         SeverityKind? severity,
         Amount? amount,
-        Duration? duration,
+        OccuredAtOnUtc? occuredAtOnUtc,
         Description? description
     )
     {
@@ -51,7 +46,7 @@ public class Income : BaseCalendarEntity<IncomeId>
         IncomeKindId = incomeKindId ?? IncomeKindId;
         Severity = severity ?? Severity;
         Amount = amount ?? Amount;
-        Duration = duration ?? Duration;
         Description = description ?? Description;
+        OccuredAtOnUtc = occuredAtOnUtc ?? OccuredAtOnUtc;
     }
 }

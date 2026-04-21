@@ -1,4 +1,3 @@
-using System;
 using MassTransit;
 
 namespace HomeApi.Domain.Entities.Incomes;
