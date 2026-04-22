@@ -19,7 +19,7 @@ public class EntryEntityKind : BaseAuditableEntity<EntryEntityKindId>
 
         return new EntryEntityKind
         {
-            Id = id,
+            Id = id ?? EntryEntityKindId.New(),
             Name = name,
             EntryKind = entryKind,
         };

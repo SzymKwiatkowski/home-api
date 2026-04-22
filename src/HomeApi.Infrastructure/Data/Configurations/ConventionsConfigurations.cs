@@ -37,10 +37,16 @@ public static class ConventionsConfigurations
             : base(v => v.Value, v => OccuredAtOnUtc.Create(v)) { }
     }
     
-    internal class IsPeriodicConverter : ValueConverter<IsPeriodic, bool>
+    internal class IsActiveConverter : ValueConverter<IsActive, bool>
     {
-        public IsPeriodicConverter()
-            : base(v => v.Value, v => IsPeriodic.Create(v)) { }
+        public IsActiveConverter()
+            : base(v => v.Value, v => IsActive.Create(v)) { }
+    }
+
+    internal class IsCompletedConverter : ValueConverter<IsCompleted, bool>
+    {
+        public IsCompletedConverter()
+            : base(v => v.Value, v => IsCompleted.Create(v)) { }
     }
     
     internal class PeriodDefinitionConverter : ValueConverter<PeriodDefinition?, string?>

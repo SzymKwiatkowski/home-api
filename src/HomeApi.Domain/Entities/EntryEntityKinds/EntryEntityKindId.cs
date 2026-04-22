@@ -10,4 +10,9 @@ public record EntryEntityKindId : StronglyTypedId<EntryEntityKindId, int>
     {
         return new EntryEntityKindId { Value = value };
     }
+
+    public static EntryEntityKindId New()
+    {
+        return new EntryEntityKindId { Value = default };
+    }
 }

@@ -10,4 +10,9 @@ public record CurrencyId : StronglyTypedId<CurrencyId, int>
     {
         return new CurrencyId { Value = value };
     }
+
+    public static CurrencyId New()
+    {
+        return new CurrencyId { Value = default };
+    }
 }

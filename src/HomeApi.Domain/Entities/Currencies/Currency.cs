@@ -23,7 +23,7 @@ public class Currency : BaseAuditableEntity<CurrencyId>
 
         return new Currency
         {
-            Id = id,
+            Id = id ?? CurrencyId.New(),
             Code = code,
             Symbol = symbol,
             Name = name,

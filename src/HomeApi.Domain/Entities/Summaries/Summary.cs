@@ -11,7 +11,7 @@ public class Summary : BaseCalendarEntity<SummaryId>
 
     public Duration Duration { get; private set; } = null!;
 
-    public Amount OverallAmount { get; private set; } = null!;
+    public Amount? OverallAmount { get; private set; } = null!;
 
     public static Summary Create(
         Name name,

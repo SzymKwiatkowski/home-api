@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
 using HomeApi.Application.Common.Interfaces;
-using HomeApi.Domain.Entities.ApplicationUser;
+using HomeApi.Domain.Entities.ApplicationUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 

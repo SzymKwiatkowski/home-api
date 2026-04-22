@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using HomeApi.Application.Common.Interfaces;
-using HomeApi.Domain.Entities.ApplicationUser;
+using HomeApi.Domain.Entities.ApplicationUsers;
 using HomeApi.Domain.Entities.Currencies;
 using HomeApi.Domain.Entities.Entries;
 using HomeApi.Domain.Entities.EntryEntityKinds;
@@ -10,10 +10,8 @@ using HomeApi.Domain.Enums;
 using HomeApi.Domain.ValueObjects;
 using HomeApi.Infrastructure.Data.Configurations;
 using HomeApi.Infrastructure.Data.Extensions;
-using HomeApi.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HomeApi.Infrastructure.Data;
 
@@ -56,7 +54,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
         configurationBuilder.Properties<EntryKind>().HaveConversion<ConventionsConfigurations.EntryKindConverter>();
         configurationBuilder.Properties<Name>().HaveConversion<ConventionsConfigurations.NameConverter>();
         configurationBuilder.Properties<Description?>().HaveConversion<ConventionsConfigurations.DescriptionConverter>();
-        configurationBuilder.Properties<IsPeriodic>().HaveConversion<ConventionsConfigurations.IsPeriodicConverter>();
+        configurationBuilder.Properties<IsActive>().HaveConversion<ConventionsConfigurations.IsActiveConverter>();
+        configurationBuilder.Properties<IsCompleted>().HaveConversion<ConventionsConfigurations.IsCompletedConverter>();
         configurationBuilder
             .Properties<PeriodDefinition?>()
             .HaveConversion<ConventionsConfigurations.PeriodDefinitionConverter>();

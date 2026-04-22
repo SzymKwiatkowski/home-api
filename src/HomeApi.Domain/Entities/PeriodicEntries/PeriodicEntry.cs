@@ -17,6 +17,8 @@ public class PeriodicEntry: BaseAuditableEntity<PeriodicEntryId>
 
     public Amount? Amount {get; private set;} = null;
 
+    public IsActive IsActive { get; private set; } = null!;
+
     protected readonly List<string> _userIds = new();
     
     [NotMapped]
@@ -38,6 +40,7 @@ public class PeriodicEntry: BaseAuditableEntity<PeriodicEntryId>
             Name = name,
             Description = description,
             Amount = amount,
+            IsActive = IsActive.True,
         };
 
         entry.SetUserIds(userIds);

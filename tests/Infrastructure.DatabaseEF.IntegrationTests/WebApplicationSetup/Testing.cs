@@ -1,5 +1,5 @@
 using HomeApi.Domain.Constants;
-using HomeApi.Domain.Entities.ApplicationUser;
+using HomeApi.Domain.Entities.ApplicationUsers;
 using HomeApi.Infrastructure.Data;
 using HomeApi.Infrastructure.Identity;
 using MediatR;

@@ -24,7 +24,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("HomeApi.Domain.Entities.ApplicationUser.ApplicationUser", b =>
+            modelBuilder.Entity("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -151,168 +151,13 @@ namespace HomeApi.Infrastructure.Data.Migrations
                     b.ToTable("currencies", "home_app");
                 });
 
-            modelBuilder.Entity("HomeApi.Domain.Entities.EventKinds.EventKind", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    b.Property<long>("Created")
-                        .HasColumnType("bigint")
-                        .HasColumnName("created");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("created_by");
-
-                    b.Property<int>("DefaultSeverity")
-                        .HasColumnType("integer")
-                        .HasColumnName("default_severity");
-
-                    b.Property<long>("LastModified")
-                        .HasColumnType("bigint")
-                        .HasColumnName("last_modified");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("last_modified_by");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_event_kinds");
-
-                    b.HasIndex("Id")
-                        .IsUnique()
-                        .HasDatabaseName("ix_event_kinds_id");
-
-                    b.ToTable("event_kinds", "home_app");
-                });
-
-            modelBuilder.Entity("HomeApi.Domain.Entities.Events.Event", b =>
+            modelBuilder.Entity("HomeApi.Domain.Entities.Entries.Entry", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<long>("Created")
-                        .HasColumnType("bigint")
-                        .HasColumnName("created");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("created_by");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<int>("EventKindId")
-                        .HasColumnType("integer")
-                        .HasColumnName("event_kind_id");
-
-                    b.Property<bool>("IsPeriodic")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_periodic");
-
-                    b.Property<long>("LastModified")
-                        .HasColumnType("bigint")
-                        .HasColumnName("last_modified");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("last_modified_by");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<string>("PeriodDefinition")
-                        .HasColumnType("text")
-                        .HasColumnName("period_definition");
-
-                    b.Property<int>("Severity")
-                        .HasColumnType("integer")
-                        .HasColumnName("severity");
-
-                    b.ComplexProperty<Dictionary<string, object>>("Duration", "HomeApi.Domain.Entities.Events.Event.Duration#Duration", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<long?>("End")
-                                .HasColumnType("bigint")
-                                .HasColumnName("duration_end");
-
-                            b1.Property<long>("Start")
-                                .HasColumnType("bigint")
-                                .HasColumnName("duration_start");
-                        });
-
-                    b.HasKey("Id")
-                        .HasName("pk_events");
-
-                    b.HasIndex("EventKindId")
-                        .HasDatabaseName("ix_events_event_kind_id");
-
-                    b.HasIndex("Id")
-                        .IsUnique()
-                        .HasDatabaseName("ix_events_id");
-
-                    b.ToTable("events", "home_app");
-                });
-
-            modelBuilder.Entity("HomeApi.Domain.Entities.IncomeKinds.IncomeKind", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    b.Property<long>("Created")
-                        .HasColumnType("bigint")
-                        .HasColumnName("created");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("created_by");
-
-                    b.Property<int>("DefaultSeverity")
-                        .HasColumnType("integer")
-                        .HasColumnName("default_severity");
-
-                    b.Property<long>("LastModified")
-                        .HasColumnType("bigint")
-                        .HasColumnName("last_modified");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text")
-                        .HasColumnName("last_modified_by");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_income_kinds");
-
-                    b.HasIndex("Id")
-                        .IsUnique()
-                        .HasDatabaseName("ix_income_kinds_id");
-
-                    b.ToTable("income_kinds", "home_app");
-                });
-
-            modelBuilder.Entity("HomeApi.Domain.Entities.Incomes.Income", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal?>("Amount")
                         .HasColumnType("numeric")
                         .HasColumnName("amount");
 
@@ -328,13 +173,17 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<int>("IncomeKindId")
+                    b.Property<int?>("EntryEntityKindId")
                         .HasColumnType("integer")
-                        .HasColumnName("income_kind_id");
+                        .HasColumnName("entry_entity_kind_id");
 
-                    b.Property<bool>("IsPeriodic")
+                    b.Property<int>("EntryKind")
+                        .HasColumnType("integer")
+                        .HasColumnName("entry_kind");
+
+                    b.Property<bool>("IsCompleted")
                         .HasColumnType("boolean")
-                        .HasColumnName("is_periodic");
+                        .HasColumnName("is_completed");
 
                     b.Property<long>("LastModified")
                         .HasColumnType("bigint")
@@ -349,41 +198,24 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<string>("PeriodDefinition")
-                        .HasColumnType("text")
-                        .HasColumnName("period_definition");
-
-                    b.Property<int>("Severity")
-                        .HasColumnType("integer")
-                        .HasColumnName("severity");
-
-                    b.ComplexProperty<Dictionary<string, object>>("Duration", "HomeApi.Domain.Entities.Incomes.Income.Duration#Duration", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<long?>("End")
-                                .HasColumnType("bigint")
-                                .HasColumnName("duration_end");
-
-                            b1.Property<long>("Start")
-                                .HasColumnType("bigint")
-                                .HasColumnName("duration_start");
-                        });
+                    b.Property<DateTimeOffset>("OccuredAtOnUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occured_at_on_utc");
 
                     b.HasKey("Id")
-                        .HasName("pk_incomes");
+                        .HasName("pk_entries");
+
+                    b.HasIndex("EntryEntityKindId")
+                        .HasDatabaseName("ix_entries_entry_entity_kind_id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasDatabaseName("ix_incomes_id");
+                        .HasDatabaseName("ix_entries_id");
 
-                    b.HasIndex("IncomeKindId")
-                        .HasDatabaseName("ix_incomes_income_kind_id");
-
-                    b.ToTable("incomes", "home_app");
+                    b.ToTable("entries", "home_app");
                 });
 
-            modelBuilder.Entity("HomeApi.Domain.Entities.PaymentKinds.PaymentKind", b =>
+            modelBuilder.Entity("HomeApi.Domain.Entities.EntryEntityKinds.EntryEntityKind", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("integer")
@@ -397,9 +229,9 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
-                    b.Property<int>("DefaultSeverity")
+                    b.Property<int>("EntryKind")
                         .HasColumnType("integer")
-                        .HasColumnName("default_severity");
+                        .HasColumnName("entry_kind");
 
                     b.Property<long>("LastModified")
                         .HasColumnType("bigint")
@@ -415,22 +247,22 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("pk_payment_kinds");
+                        .HasName("pk_entry_entity_kinds");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasDatabaseName("ix_payment_kinds_id");
+                        .HasDatabaseName("ix_entry_entity_kinds_id");
 
-                    b.ToTable("payment_kinds", "home_app");
+                    b.ToTable("entry_entity_kinds", "home_app");
                 });
 
-            modelBuilder.Entity("HomeApi.Domain.Entities.Payments.Payment", b =>
+            modelBuilder.Entity("HomeApi.Domain.Entities.PeriodicEntries.PeriodicEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal?>("Amount")
                         .HasColumnType("numeric")
                         .HasColumnName("amount");
 
@@ -446,9 +278,9 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<bool>("IsPeriodic")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
-                        .HasColumnName("is_periodic");
+                        .HasColumnName("is_active");
 
                     b.Property<long>("LastModified")
                         .HasColumnType("bigint")
@@ -463,19 +295,16 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int>("PaymentKindId")
-                        .HasColumnType("integer")
-                        .HasColumnName("payment_kind_id");
+                    b.Property<DateTimeOffset?>("OccuredAtOnUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occured_at_on_utc");
 
                     b.Property<string>("PeriodDefinition")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("period_definition");
 
-                    b.Property<int>("Severity")
-                        .HasColumnType("integer")
-                        .HasColumnName("severity");
-
-                    b.ComplexProperty<Dictionary<string, object>>("Duration", "HomeApi.Domain.Entities.Payments.Payment.Duration#Duration", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Duration", "HomeApi.Domain.Entities.PeriodicEntries.PeriodicEntry.Duration#Duration", b1 =>
                         {
                             b1.IsRequired();
 
@@ -489,16 +318,13 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         });
 
                     b.HasKey("Id")
-                        .HasName("pk_payments");
+                        .HasName("pk_periodic_entries");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasDatabaseName("ix_payments_id");
+                        .HasDatabaseName("ix_periodic_entries_id");
 
-                    b.HasIndex("PaymentKindId")
-                        .HasDatabaseName("ix_payments_payment_kind_id");
-
-                    b.ToTable("payments", "home_app");
+                    b.ToTable("periodic_entries", "home_app");
                 });
 
             modelBuilder.Entity("HomeApi.Domain.Entities.Summaries.Summary", b =>
@@ -519,10 +345,6 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<bool>("IsPeriodic")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_periodic");
-
                     b.Property<long>("LastModified")
                         .HasColumnType("bigint")
                         .HasColumnName("last_modified");
@@ -536,17 +358,13 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<decimal>("OverallAmount")
+                    b.Property<DateTimeOffset>("OccuredAtOnUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("occured_at_on_utc");
+
+                    b.Property<decimal?>("OverallAmount")
                         .HasColumnType("numeric")
                         .HasColumnName("overall_amount");
-
-                    b.Property<string>("PeriodDefinition")
-                        .HasColumnType("text")
-                        .HasColumnName("period_definition");
-
-                    b.Property<int>("Severity")
-                        .HasColumnType("integer")
-                        .HasColumnName("severity");
 
                     b.ComplexProperty<Dictionary<string, object>>("Duration", "HomeApi.Domain.Entities.Summaries.Summary.Duration#Duration", b1 =>
                         {
@@ -735,143 +553,57 @@ namespace HomeApi.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", "home_app");
                 });
 
-            modelBuilder.Entity("owners_events", b =>
-                {
-                    b.Property<Guid>("event_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("event_id");
-
-                    b.Property<string>("user_id")
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("event_id", "user_id")
-                        .HasName("pk_owners_events");
-
-                    b.HasIndex("user_id")
-                        .HasDatabaseName("ix_owners_events_user_id");
-
-                    b.ToTable("owners_events", "home_app");
-                });
-
-            modelBuilder.Entity("owners_incomes", b =>
-                {
-                    b.Property<Guid>("income_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("income_id");
-
-                    b.Property<string>("user_id")
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("income_id", "user_id")
-                        .HasName("pk_owners_incomes");
-
-                    b.HasIndex("user_id")
-                        .HasDatabaseName("ix_owners_incomes_user_id");
-
-                    b.ToTable("owners_incomes", "home_app");
-                });
-
-            modelBuilder.Entity("owners_payments", b =>
-                {
-                    b.Property<Guid>("payment_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("payment_id");
-
-                    b.Property<string>("user_id")
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("payment_id", "user_id")
-                        .HasName("pk_owners_payments");
-
-                    b.HasIndex("user_id")
-                        .HasDatabaseName("ix_owners_payments_user_id");
-
-                    b.ToTable("owners_payments", "home_app");
-                });
-
-            modelBuilder.Entity("summaries_incomes", b =>
+            modelBuilder.Entity("summaries_entries", b =>
                 {
                     b.Property<Guid>("SummaryId")
                         .HasColumnType("uuid")
                         .HasColumnName("summary_id");
 
-                    b.Property<Guid>("IncomeId")
+                    b.Property<Guid>("EntryId")
                         .HasColumnType("uuid")
-                        .HasColumnName("income_id");
+                        .HasColumnName("entry_id");
 
-                    b.Property<Guid>("_incomesId")
+                    b.Property<Guid>("_entriesId")
                         .HasColumnType("uuid")
-                        .HasColumnName("_incomes_id");
+                        .HasColumnName("_entries_id");
 
-                    b.HasKey("SummaryId", "IncomeId")
-                        .HasName("pk_summaries_incomes");
+                    b.HasKey("SummaryId", "EntryId")
+                        .HasName("pk_summaries_entries");
 
-                    b.HasIndex("IncomeId")
-                        .HasDatabaseName("ix_summaries_incomes_income_id");
+                    b.HasIndex("EntryId")
+                        .HasDatabaseName("ix_summaries_entries_entry_id");
 
-                    b.HasIndex("_incomesId")
-                        .HasDatabaseName("ix_summaries_incomes__incomes_id");
+                    b.HasIndex("_entriesId")
+                        .HasDatabaseName("ix_summaries_entries__entries_id");
 
-                    b.ToTable("summaries_incomes", "home_app");
+                    b.ToTable("summaries_entries", "home_app");
                 });
 
-            modelBuilder.Entity("summaries_payments", b =>
+            modelBuilder.Entity("users_events", b =>
                 {
-                    b.Property<Guid>("SummaryId")
+                    b.Property<Guid>("entry_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("summary_id");
+                        .HasColumnName("entry_id");
 
-                    b.Property<Guid>("PaymentId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("payment_id");
+                    b.Property<string>("user_id")
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
 
-                    b.Property<Guid>("_paymentsId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("_payments_id");
+                    b.HasKey("entry_id", "user_id")
+                        .HasName("pk_users_events");
 
-                    b.HasKey("SummaryId", "PaymentId")
-                        .HasName("pk_summaries_payments");
+                    b.HasIndex("user_id")
+                        .HasDatabaseName("ix_users_events_user_id");
 
-                    b.HasIndex("PaymentId")
-                        .HasDatabaseName("ix_summaries_payments_payment_id");
-
-                    b.HasIndex("_paymentsId")
-                        .HasDatabaseName("ix_summaries_payments__payments_id");
-
-                    b.ToTable("summaries_payments", "home_app");
+                    b.ToTable("users_events", "home_app");
                 });
 
-            modelBuilder.Entity("HomeApi.Domain.Entities.Events.Event", b =>
+            modelBuilder.Entity("HomeApi.Domain.Entities.Entries.Entry", b =>
                 {
-                    b.HasOne("HomeApi.Domain.Entities.EventKinds.EventKind", null)
+                    b.HasOne("HomeApi.Domain.Entities.EntryEntityKinds.EntryEntityKind", null)
                         .WithMany()
-                        .HasForeignKey("EventKindId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_events_event_kinds_event_kind_id");
-                });
-
-            modelBuilder.Entity("HomeApi.Domain.Entities.Incomes.Income", b =>
-                {
-                    b.HasOne("HomeApi.Domain.Entities.IncomeKinds.IncomeKind", null)
-                        .WithMany()
-                        .HasForeignKey("IncomeKindId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_incomes_income_kinds_income_kind_id");
-                });
-
-            modelBuilder.Entity("HomeApi.Domain.Entities.Payments.Payment", b =>
-                {
-                    b.HasOne("HomeApi.Domain.Entities.PaymentKinds.PaymentKind", null)
-                        .WithMany()
-                        .HasForeignKey("PaymentKindId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_payments_payment_kinds_payment_kind_id");
+                        .HasForeignKey("EntryEntityKindId")
+                        .HasConstraintName("fk_entries_entry_entity_kinds_entry_entity_kind_id");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -886,7 +618,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("HomeApi.Domain.Entities.ApplicationUser.ApplicationUser", null)
+                    b.HasOne("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -896,7 +628,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("HomeApi.Domain.Entities.ApplicationUser.ApplicationUser", null)
+                    b.HasOne("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -913,7 +645,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_asp_net_user_roles_asp_net_roles_role_id");
 
-                    b.HasOne("HomeApi.Domain.Entities.ApplicationUser.ApplicationUser", null)
+                    b.HasOne("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -923,7 +655,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("HomeApi.Domain.Entities.ApplicationUser.ApplicationUser", null)
+                    b.HasOne("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -931,103 +663,45 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
                 });
 
-            modelBuilder.Entity("owners_events", b =>
+            modelBuilder.Entity("summaries_entries", b =>
                 {
-                    b.HasOne("HomeApi.Domain.Entities.Events.Event", null)
+                    b.HasOne("HomeApi.Domain.Entities.Entries.Entry", null)
                         .WithMany()
-                        .HasForeignKey("event_id")
+                        .HasForeignKey("EntryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_owners_events_events_event_id");
-
-                    b.HasOne("HomeApi.Domain.Entities.ApplicationUser.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_owners_events_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("owners_incomes", b =>
-                {
-                    b.HasOne("HomeApi.Domain.Entities.Incomes.Income", null)
-                        .WithMany()
-                        .HasForeignKey("income_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_owners_incomes_incomes_income_id");
-
-                    b.HasOne("HomeApi.Domain.Entities.ApplicationUser.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_owners_incomes_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("owners_payments", b =>
-                {
-                    b.HasOne("HomeApi.Domain.Entities.Payments.Payment", null)
-                        .WithMany()
-                        .HasForeignKey("payment_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_owners_payments_payments_payment_id");
-
-                    b.HasOne("HomeApi.Domain.Entities.ApplicationUser.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_owners_payments_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("summaries_incomes", b =>
-                {
-                    b.HasOne("HomeApi.Domain.Entities.Incomes.Income", null)
-                        .WithMany()
-                        .HasForeignKey("IncomeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_summaries_incomes_incomes_income_id");
+                        .HasConstraintName("fk_summaries_entries_entries_entry_id");
 
                     b.HasOne("HomeApi.Domain.Entities.Summaries.Summary", null)
                         .WithMany()
                         .HasForeignKey("SummaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_summaries_incomes_summaries_summary_id");
+                        .HasConstraintName("fk_summaries_entries_summaries_summary_id");
 
-                    b.HasOne("HomeApi.Domain.Entities.Incomes.Income", null)
+                    b.HasOne("HomeApi.Domain.Entities.Entries.Entry", null)
                         .WithMany()
-                        .HasForeignKey("_incomesId")
+                        .HasForeignKey("_entriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_summaries_incomes_incomes__incomes_id");
+                        .HasConstraintName("fk_summaries_entries_entries__entries_id");
                 });
 
-            modelBuilder.Entity("summaries_payments", b =>
+            modelBuilder.Entity("users_events", b =>
                 {
-                    b.HasOne("HomeApi.Domain.Entities.Payments.Payment", null)
+                    b.HasOne("HomeApi.Domain.Entities.Entries.Entry", null)
                         .WithMany()
-                        .HasForeignKey("PaymentId")
+                        .HasForeignKey("entry_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_summaries_payments_payments_payment_id");
+                        .HasConstraintName("fk_users_events_entries_entry_id");
 
-                    b.HasOne("HomeApi.Domain.Entities.Summaries.Summary", null)
+                    b.HasOne("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", null)
                         .WithMany()
-                        .HasForeignKey("SummaryId")
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_summaries_payments_summaries_summary_id");
-
-                    b.HasOne("HomeApi.Domain.Entities.Payments.Payment", null)
-                        .WithMany()
-                        .HasForeignKey("_paymentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_summaries_payments_payments__payments_id");
+                        .HasConstraintName("fk_users_events_asp_net_users_user_id");
                 });
 #pragma warning restore 612, 618
         }

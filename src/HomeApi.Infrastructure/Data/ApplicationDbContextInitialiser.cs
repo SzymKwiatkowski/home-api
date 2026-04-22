@@ -1,6 +1,5 @@
 ﻿using HomeApi.Domain.Constants;
-using HomeApi.Domain.Entities.ApplicationUser;
-using HomeApi.Infrastructure.Identity;
+using HomeApi.Domain.Entities.ApplicationUsers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

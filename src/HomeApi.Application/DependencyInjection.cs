@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using HomeApi.Application.Common.Behaviours;
+using HomeApi.Application.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -9,7 +10,8 @@ public static class DependencyInjection
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        builder.Services.AddMapster();
+        RegisterMapsterConfigs();
 
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -21,5 +23,11 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
+    }
+
+    private static void RegisterMapsterConfigs()
+    {
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Scan(Assembly.GetExecutingAssembly());
     }
 }
