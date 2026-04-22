@@ -1,5 +1,4 @@
-using HomeApi.Domain.Entities.Incomes;
-using HomeApi.Domain.Entities.Payments;
+using HomeApi.Domain.Entities.Entries;
 using HomeApi.Domain.ValueObjects;
 
 namespace HomeApi.Domain.Entities.Summaries;
@@ -8,9 +7,9 @@ public class Summary : BaseCalendarEntity<SummaryId>
 {
     private Summary() { }
 
-    private readonly List<Income> _incomes = new ();
+    private readonly List<Entry> _entries = new();
 
-    private readonly List<Payment> _payments = new();
+    public Duration Duration { get; private set; } = null!;
 
     public Amount OverallAmount { get; private set; } = null!;
 
@@ -30,76 +29,40 @@ public class Summary : BaseCalendarEntity<SummaryId>
         };
     }
 
-    public IReadOnlyList<Income> GetIncomes() => _incomes.ToList();
+    public IReadOnlyList<Entry> GetEntries() => _entries.ToList();
 
-    public IReadOnlyList<Payment> GetPayments() => _payments.ToList();
-
-    public void AddIncome(Income income)
+    public void AddEntry(Entry entry)
     {
-        if (_incomes.Any(p => p.Id == income.Id))
+        if (_entries.Any(p => p.Id == entry.Id))
         {
-            _incomes.Add(income);
+            _entries.Add(entry);
         }
     }
 
-    public void AddIncomes(ICollection<Income> incomes)
+    public void AddEntries(ICollection<Entry> entries)
     {
-        incomes.ToList().ForEach(AddIncome);
+        entries.ToList().ForEach(AddEntry);
     }
 
-    public void AddPayments(ICollection<Payment> payments)
+    public void RemoveIncome(EntryId entryId)
     {
-        payments.ToList().ForEach(AddPayment);
-    }
-
-    public void AddPayment(Payment payment)
-    {
-        if (_payments.Any(p => p.Id == payment.Id))
-        {
-            _payments.Add(payment);
-        }
-    }
-
-    public void RemoveIncome(IncomeId incomeId)
-    {
-        var income = _incomes.FirstOrDefault(p => p.Id == incomeId);
+        var income = _entries.FirstOrDefault(p => p.Id == entryId);
 
         if (income is not null)
         {
-            _incomes.Remove(income);
+            _entries.Remove(income);
         }
     }
 
-    public void RemoveIncomes(ICollection<IncomeId> incomeIds)
+    public void RemoveIncomes(ICollection<EntryId> entryIds)
     {
-        incomeIds.ToList().ForEach(RemoveIncome);
+        entryIds.ToList().ForEach(RemoveIncome);
     }
 
-    public void RemovePayment(PaymentId paymentId)
+
+    public void SetIncomes(ICollection<Entry> entries)
     {
-        var payment = _payments.FirstOrDefault(p => p.Id == paymentId);
-
-        if (payment is not null)
-        {
-            _payments.Remove(payment);
-        }
-    }
-
-    public void RemovePayments(ICollection<PaymentId> paymentIds)
-    {
-        paymentIds.ToList().ForEach(RemovePayment);
-    }
-
-    public void SetIncomes(ICollection<Income> incomes)
-    {
-        _incomes.Clear();
-        _incomes.AddRange(incomes);
-    }
-
-    public void SetPayments(ICollection<Payment> payments)
-    {
-        _payments.Clear();
-
-        _payments.AddRange(payments);
+        _entries.Clear();
+        _entries.AddRange(entries);
     }
 }

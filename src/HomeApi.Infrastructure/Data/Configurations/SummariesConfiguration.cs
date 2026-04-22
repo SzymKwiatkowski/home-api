@@ -1,5 +1,4 @@
-using HomeApi.Domain.Entities.Incomes;
-using HomeApi.Domain.Entities.Payments;
+using HomeApi.Domain.Entities.Entries;
 using HomeApi.Domain.Entities.Summaries;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -19,29 +18,16 @@ public class SummariesConfiguration : IEntityTypeConfiguration<Summary>
         builder.HasIndex(x => x.Id).IsUnique();
 
         builder
-            .HasMany<Income>("_incomes")
+            .HasMany<Entry>("_entries")
             .WithMany()
             .UsingEntity(
-                "summaries_incomes",
+                "summaries_entries",
                 j =>
                 {
-                    j.ToTable("summaries_incomes");
+                    j.ToTable("summaries_entries");
                     j.HasOne(typeof(Summary)).WithMany().HasForeignKey(nameof(SummaryId));
-                    j.HasOne(typeof(Income)).WithMany().HasForeignKey(nameof(IncomeId));
-                    j.HasKey(nameof(SummaryId), nameof(IncomeId));
-                });
-
-        builder
-            .HasMany<Payment>("_payments")
-            .WithMany()
-            .UsingEntity(
-                "summaries_payments",
-                j =>
-                {
-                    j.ToTable("summaries_payments");
-                    j.HasOne(typeof(Summary)).WithMany().HasForeignKey(nameof(SummaryId));
-                    j.HasOne(typeof(Payment)).WithMany().HasForeignKey(nameof(PaymentId));
-                    j.HasKey(nameof(SummaryId), nameof(PaymentId));
+                    j.HasOne(typeof(Entry)).WithMany().HasForeignKey(nameof(EntryId));
+                    j.HasKey(nameof(SummaryId), nameof(EntryId));
                 });
 
         builder.ComplexProperty(x => x.Duration);

@@ -13,10 +13,10 @@ public static class ConventionsConfigurations
             : base(v => v.ToUnixTimeMilliseconds(), v => DateTimeOffset.FromUnixTimeMilliseconds(v)) { }
     }
     
-    internal class SeverityKindConverter : ValueConverter<SeverityKind, int>
+    internal class EntryKindConverter : ValueConverter<EntryKind, int>
     {
-        public SeverityKindConverter()
-            : base(v => v.Value, v => SeverityKind.FromValue(v)) { }
+        public EntryKindConverter()
+            : base(v => v.Value, v => EntryKind.FromValue(v)) { }
     }
     
     internal class NameConverter : ValueConverter<Name, string>
@@ -29,6 +29,12 @@ public static class ConventionsConfigurations
     {
         public DescriptionConverter()
             : base(v => v == null ? null : v.Value, v => v == null ? null : Description.Create(v)) { }
+    }
+
+    internal class OccuredAtOnUtcConverter : ValueConverter<OccuredAtOnUtc, DateTimeOffset>
+    {
+        public OccuredAtOnUtcConverter()
+            : base(v => v.Value, v => OccuredAtOnUtc.Create(v)) { }
     }
     
     internal class IsPeriodicConverter : ValueConverter<IsPeriodic, bool>

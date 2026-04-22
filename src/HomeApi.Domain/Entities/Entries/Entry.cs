@@ -23,19 +23,17 @@ public class Entry : BaseCalendarEntity<EntryId>
 
     public static Entry Create(
         Name name,
-        SeverityKind severity,
         Amount amount,
         OccuredAtOnUtc occuredAtOnUtc,
         EntryId? id = null
     )
     {
-        GuardExtensions.Null(name, severity, amount, occuredAtOnUtc);
+        GuardExtensions.Null(name, amount, occuredAtOnUtc);
 
         var entry = new Entry
         {
             Id = id ?? EntryId.New(),
             Name = name,
-            Severity = severity,
             Amount = amount,
             OccuredAtOnUtc = occuredAtOnUtc,
             EntryKind = MapKindBasedOnAmount(amount),

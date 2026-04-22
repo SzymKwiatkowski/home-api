@@ -13,8 +13,6 @@ public class BaseCalendarEntity<T> : BaseAuditableEntity<T>
 
     public Description? Description { get; protected set; } = null!;
 
-    public SeverityKind Severity { get; protected set; } = null!;
-
     protected readonly List<string> _ownerIds = new();
     
     [NotMapped]

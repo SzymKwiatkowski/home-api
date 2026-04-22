@@ -8,7 +8,7 @@ using Minerals.StringCases;
 
 namespace HomeApi.Infrastructure.Data.Configurations;
 
-public class EventsConfiguration : IEntityTypeConfiguration<Entry>
+public class EntriesConfiguration : IEntityTypeConfiguration<Entry>
 {
     public void Configure(EntityTypeBuilder<Entry> builder)
     {
@@ -18,7 +18,7 @@ public class EventsConfiguration : IEntityTypeConfiguration<Entry>
 
     private static void ConfigureEventsTable(EntityTypeBuilder<Entry> builder)
     {
-        builder.ToTable("events");
+        builder.ToTable("entries");
         builder.HasIndex(x => x.Id).IsUnique();
 
         builder.ComplexProperty(x => x.Duration);
