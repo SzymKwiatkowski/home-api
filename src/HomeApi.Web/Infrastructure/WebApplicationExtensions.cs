@@ -5,21 +5,19 @@ namespace HomeApi.Web.Infrastructure;
 
 public static class WebApplicationExtensions
 {
-    public static RouteGroupBuilder MapGroup(this WebApplication app, EndpointGroupBase group)
+    public static IEndpointRouteBuilder MapGroup(this WebApplication app, EndpointGroupBase group)
     {
         var groupName = group.GetType().Name.ToLower();
 
         return app
             .MapGroup($"/api/{groupName}")
-            .WithGroupName(groupName)
+            // .WithGroupName(groupName.ToPascalCase())
             .WithTags(groupName.ToPascalCase());
     }
 
-    public static WebApplication MapEndpoints(this WebApplication app)
+    public static WebApplication MapEndpoints(this WebApplication app, Assembly assembly)
     {
         var endpointGroupType = typeof(EndpointGroupBase);
-
-        var assembly = Assembly.GetExecutingAssembly();
 
         var endpointGroupTypes = assembly.GetExportedTypes()
             .Where(t => t.IsSubclassOf(endpointGroupType));

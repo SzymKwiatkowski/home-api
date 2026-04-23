@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="Entities/Entries/" />
-    <Folder Include="Entities\Payments\ValueObjects\" />
   </ItemGroup>
 
 </Project>

@@ -1,12 +1,9 @@
-using Mapster;
 using HomeApi.Application.Common.Interfaces;
-using HomeApi.Domain.Entities.Currencies;
 using HomeApi.Domain.Entities.Currencies.ValueObjects;
-using HomeApi.Rest.Contracts.Currencies;
-using Microsoft.AspNetCore.Mvc;
 using Currency = HomeApi.Domain.Entities.Currencies.Currency;
 using MapsterMapper;
 using HomeApi.Domain.ValueObjects;
+using HomeApi.Rest.Contracts.Currencies;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeApi.Web.Endpoints;
@@ -17,13 +14,13 @@ public class Currencies : EndpointGroupBase
     {
         var group = app.MapGroup(this);
 
-        group.MapPost(CreateCurrency, "");
-        group.MapGet(GetCurrencies, "");
-        group.MapDelete(DeleteCurrency, "{id:int}");
+        group.MapPost<CreateCurrency, int>(CreateCurrency, "");
+        group.MapGet<List<GetCurrency>>(GetCurrencies, "");
+        group.MapDelete<DeleteCurrency, int>(DeleteCurrency, "{id:int}");
     }
 
     private async Task<IResult> CreateCurrency(
-        Rest.Contracts.Currencies.CreateCurrency request,
+        CreateCurrency request,
         IApplicationDbContext context,
         IMapper mapper,
         CancellationToken cancellationToken)
@@ -39,7 +36,7 @@ public class Currencies : EndpointGroupBase
             context.Currencies.Add(currency);
             await context.SaveChangesAsync(cancellationToken);
 
-            var response = mapper.Map<Rest.Contracts.Currencies.GetCurrency>(currency);
+            var response = mapper.Map<GetCurrency>(currency);
             return Results.Created($"/api/currencies/{currency.Id.Value}", response);
         }
         catch (Exception ex)
@@ -56,7 +53,7 @@ public class Currencies : EndpointGroupBase
         try
         {
             var currencies = context.Currencies.AsEnumerable().ToList();
-            var response = mapper.Map<List<Rest.Contracts.Currencies.GetCurrency>>(currencies);
+            var response = mapper.Map<List<GetCurrency>>(currencies);
             return Task.FromResult(Results.Ok(response));
         }
         catch (Exception ex)

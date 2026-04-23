@@ -19,7 +19,7 @@ public static class EntityExtensions
 
             foreach (var property in properties)
             {
-                var converterType = typeof(ConventionsConfigurations.StronglyTypedIdConnverter<,>).MakeGenericType(
+                var converterType = typeof(ConventionsConfigurations.StronglyTypedIdConverter<,>).MakeGenericType(
                     property.PropertyType,
                     // Should always be inherited from StronglyTypedId
                     property.PropertyType.BaseType!.GetGenericArguments().Last()

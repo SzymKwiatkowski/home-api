@@ -1,5 +1,8 @@
 ﻿using HomeApi.Domain.Constants;
 using HomeApi.Domain.Entities.ApplicationUsers;
+using HomeApi.Domain.Entities.Currencies;
+using HomeApi.Domain.Entities.Currencies.ValueObjects;
+using HomeApi.Domain.ValueObjects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -93,6 +96,67 @@ public class ApplicationDbContextInitialiser
             {
                 await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
             }
+        }
+
+        if (!await _context.Currencies.AnyAsync())
+        {
+            var currencies = new List<Currency>()
+            {
+                Currency.Create(
+                    Code.Create("PLN"),
+                    Symbol.Create("zł"),
+                    Name.Create("Polish złoty"),
+                    CurrencyId.Create(1)),
+                Currency.Create(
+                    Code.Create("USB"),
+                    Symbol.Create("$"),
+                    Name.Create("US Dollar"),
+                    CurrencyId.Create(2)),
+                Currency.Create(
+                    Code.Create("EUR"),
+                    Symbol.Create("€"),
+                    Name.Create("Euro"),
+                    CurrencyId.Create(3)),
+                Currency.Create(
+                    Code.Create("GBP"),
+                    Symbol.Create("£"),
+                    Name.Create("British Pound"),
+                    CurrencyId.Create(4)),
+                Currency.Create(
+                    Code.Create("CHF"),
+                    Symbol.Create("Fr"),
+                    Name.Create("Swiss Franc"),
+                    CurrencyId.Create(5)),
+                Currency.Create(
+                    Code.Create("CZK"),
+                    Symbol.Create("Kč"),
+                    Name.Create("Czech Koruna"),
+                    CurrencyId.Create(6)),
+                Currency.Create(
+                    Code.Create("SEK"),
+                    Symbol.Create("kr"),
+                    Name.Create("Swedish Krone"),
+                    CurrencyId.Create(7)),
+                Currency.Create(
+                    Code.Create("NOK"),
+                    Symbol.Create("kr"),
+                    Name.Create("Norwegian Krone"),
+                    CurrencyId.Create(8)),
+                Currency.Create(
+                    Code.Create("JPY"),
+                    Symbol.Create("¥"),
+                    Name.Create("Japanese Yen"),
+                    CurrencyId.Create(9)),
+                Currency.Create(
+                    Code.Create("CAD"),
+                    Symbol.Create("C$"),
+                    Name.Create("Canadian Dollar"),
+                    CurrencyId.Create(10)),
+            };
+            
+            await _context.Currencies.AddRangeAsync(currencies);
+                
+            await _context.SaveChangesAsync(CancellationToken.None);
         }
     }
 }

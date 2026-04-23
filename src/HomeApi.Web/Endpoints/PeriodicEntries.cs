@@ -1,4 +1,3 @@
-using Mapster;
 using HomeApi.Application.Common.Interfaces;
 using HomeApi.Domain.ValueObjects;
 using HomeApi.Rest.Contracts.PeriodicEntries;
@@ -13,8 +12,8 @@ public class PeriodicEntries : EndpointGroupBase
     {
         var group = app.MapGroup(this);
 
-        group.MapPost(CreatePeriodicEntry, "");
-        group.MapGet(GetPeriodicEntries, "");
+        group.MapPost<CreatePeriodicEntry, Guid>(CreatePeriodicEntry, "");
+        group.MapGet<List<GetPeriodicEntry>>(GetPeriodicEntries, "");
     }
 
     private async Task<IResult> CreatePeriodicEntry(
@@ -45,7 +44,7 @@ public class PeriodicEntries : EndpointGroupBase
             await context.SaveChangesAsync(cancellationToken);
 
             var response = mapper.Map<GetPeriodicEntry>(entry);
-            return Results.Created($"/api/periodicentries/{entry.Id!.Value}", response);
+            return Results.Created($"/api/periodic-entries/{entry.Id!.Value}", response);
         }
         catch (Exception ex)
         {

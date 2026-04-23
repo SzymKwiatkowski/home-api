@@ -1,10 +1,12 @@
 ﻿using HomeApi.Application.Common.Interfaces;
+using HomeApi.Application.Repositories;
 using HomeApi.Domain.Constants;
 using HomeApi.Domain.Entities.ApplicationUsers;
 using HomeApi.Infrastructure.Data;
 using HomeApi.Infrastructure.Data.Interceptors;
 using HomeApi.Infrastructure.Extensions;
 using HomeApi.Infrastructure.Identity;
+using HomeApi.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -59,6 +61,7 @@ public static class DependencyInjection
         builder.Services.AddSingletonServices();
         builder.Services.AddScopedServices();
         builder.Services.AddTransientServices();
+        builder.Services.AddScoped<IEntriesRepository, EntriesRepository>();
         
         // Add quartz
         builder.Services.AddQuartz();

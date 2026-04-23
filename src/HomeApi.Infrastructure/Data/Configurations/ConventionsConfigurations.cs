@@ -62,12 +62,12 @@ public static class ConventionsConfigurations
             : base(v => v.Value, v => Amount.Create(v)) { }
     }
     
-    internal class StronglyTypedIdConnverter<TId, TValue> : ValueConverter<TId, TValue>
-        where TId : IEntityId<TValue>, ICreateId<TId, TValue>
+    internal class StronglyTypedIdConverter<TId, TValue> : ValueConverter<TId, TValue>
+        where TId : StronglyTypedId<TId, TValue>, IEntityId<TValue>, ICreateId<TId, TValue>
         where TValue : notnull
     {
-        public StronglyTypedIdConnverter()
-            : base(v => v.Value, v => StronglyTypedId<TId, TValue>.Create(v)) { }
+        public StronglyTypedIdConverter()
+            : base(v => v.Value, v => StronglyTypedId<TId, TValue>.CreateStronglyTypedId(v)) { }
     }
 
 }

@@ -16,13 +16,13 @@ public class Entries : EndpointGroupBase
     {
         var group = app.MapGroup(this);
 
-        group.MapPost(CreateEntry, "");
-        group.MapGet(GetEntries, "");
-        group.MapPut(ToggleEntry, "{id:guid}/toggle");
+        group.MapPost<CreateEntry, Guid>(CreateEntry, "");
+        group.MapGet<List<GetEntry>>(GetEntries, "");
+        group.MapPut<GetEntry>(ToggleEntry, "{id:guid}/toggle");
     }
 
     private async Task<IResult> CreateEntry(
-        Rest.Contracts.Entries.CreateEntry request,
+        CreateEntry request,
         IEntriesRepository repository,
         CancellationToken cancellationToken)
     {
@@ -61,7 +61,7 @@ public class Entries : EndpointGroupBase
                 return Results.BadRequest(new { error = result.Error });
             }
 
-            var response = entry.Adapt<Rest.Contracts.Entries.GetEntry>();
+            var response = entry.Adapt<GetEntry>();
             return Results.Created($"/api/entries/{entry.Id}", response);
         }
         catch (Exception ex)
@@ -98,7 +98,7 @@ public class Entries : EndpointGroupBase
                 entries = entries.Where(e => e.OccuredAtOnUtc.Value <= endDate.Value);
             }
 
-            var response = entries.Adapt<List<Rest.Contracts.Entries.GetEntry>>();
+            var response = entries.Adapt<List<GetEntry>>();
             return Results.Ok(response);
         }
         catch (Exception ex)
@@ -132,7 +132,7 @@ public class Entries : EndpointGroupBase
                 return Results.BadRequest(new { error = updateResult.Error });
             }
 
-            var response = entry.Adapt<Rest.Contracts.Entries.GetEntry>();
+            var response = entry.Adapt<GetEntry>();
             return Results.Ok(response);
         }
         catch (Exception ex)

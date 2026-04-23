@@ -1,6 +1,4 @@
-using Mapster;
 using HomeApi.Application.Common.Interfaces;
-using HomeApi.Domain.Entities.EntryEntityKinds;
 using HomeApi.Domain.Enums;
 using HomeApi.Domain.ValueObjects;
 using HomeApi.Rest.Contracts.EntryEntityKinds;
@@ -15,8 +13,8 @@ public class EntryEntityKinds : EndpointGroupBase
     {
         var group = app.MapGroup(this);
 
-        group.MapPost(CreateEntryEntityKind, "");
-        group.MapGet(GetEntryEntityKinds, "");
+        group.MapPost<CreateEntryEnityKind, int>(CreateEntryEntityKind, "");
+        group.MapGet<List<GetEntryEntityKind>>(GetEntryEntityKinds, "");
     }
 
     private async Task<IResult> CreateEntryEntityKind(
@@ -38,7 +36,7 @@ public class EntryEntityKinds : EndpointGroupBase
             await context.SaveChangesAsync(cancellationToken);
 
             var response = mapper.Map<GetEntryEntityKind>(kind);
-            return Results.Created($"/api/entryentitykinds/{kind.Id!.Value}", response);
+            return Results.Created($"/api/entry-entity-kinds/{kind.Id!.Value}", response);
         }
         catch (Exception ex)
         {

@@ -2,19 +2,17 @@ using MassTransit;
 
 namespace HomeApi.Domain.Entities.Entries;
 
-public record EntryId : StronglyTypedId<EntryId, Guid>
+public record EntryId : StronglyTypedId<EntryId, Guid>, ICreateId<EntryId, Guid>
 {
     private EntryId() { }
-
-    public new Guid Value { get; private set; }
-
-    public static new EntryId Create(Guid value)
-    {
-        return new EntryId { Value = value };
-    }
 
     public static EntryId New()
     {
         return new EntryId { Value = NewId.NextGuid() };
+    }
+
+    public static EntryId Create(Guid value)
+    {
+        return new EntryId { Value = value };
     }
 }

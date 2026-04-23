@@ -3,8 +3,6 @@ using HomeApi.Application.Common.Interfaces;
 using HomeApi.Infrastructure.Data;
 using HomeApi.Web.Services;
 using Microsoft.AspNetCore.Mvc;
-using NSwag;
-using NSwag.Generation.Processors.Security;
 
 namespace HomeApi.Web;
 
@@ -22,28 +20,15 @@ public static class DependencyInjection
 
         builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-
         // Customise default API behaviour
         builder.Services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
-
+        
         builder.Services.AddEndpointsApiExplorer();
 
-        builder.Services.AddOpenApiDocument((configure, sp) =>
-        {
-            configure.Title = "HomeApi API";
+        builder.Services.AddOpenApi();
 
-            // Add JWT
-            configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
-            {
-                Type = OpenApiSecuritySchemeType.ApiKey,
-                Name = "Authorization",
-                In = OpenApiSecurityApiKeyLocation.Header,
-                Description = "Type into the textbox: Bearer {your JWT token}."
-            });
-
-            configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-        });
+        builder.Services.AddCors();
     }
 
     public static void AddKeyVaultIfConfigured(this IHostApplicationBuilder builder)

@@ -2,6 +2,7 @@ using HomeApi.Application;
 using HomeApi.Infrastructure;
 using HomeApi.Infrastructure.Data;
 using HomeApi.Web;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,25 +37,31 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.UseSwaggerUi(settings =>
-{
-    settings.Path = "/api";
+app.UseExceptionHandler(options => { });
 
-    settings.DocumentPath = "/api/specification.json";
+app.UseCors(static builder => 
+    builder.AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin());
+
+app.MapOpenApi();
+
+app.UseSwaggerUI(settings =>
+{
+    settings.SwaggerEndpoint("/openapi/v1.json", "v1");
 });
 
 app.UseReDoc(options =>
 {
-    options.Path = "/api/redoc";
-
-    options.DocumentPath = "/api/specification.json";
+    options.SpecUrl("/openapi/v1.json");
+    options.RoutePrefix = "docs";
 });
 
-app.UseExceptionHandler(options => { });
+app.MapScalarApiReference();
 
-app.Map("/", () => Results.Redirect("/api"));
+app.Map("/", () => Results.Redirect("/scalar"));
 
-app.MapEndpoints();
+app.MapEndpoints(typeof(Program).Assembly);
 
 await app.RunAsync();
 

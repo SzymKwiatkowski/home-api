@@ -1,6 +1,4 @@
-using Mapster;
 using HomeApi.Application.Common.Interfaces;
-using HomeApi.Domain.Entities.Summaries;
 using HomeApi.Domain.ValueObjects;
 using HomeApi.Rest.Contracts.Summaries;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +13,8 @@ public class Summaries : EndpointGroupBase
     {
         var group = app.MapGroup(this);
 
-        group.MapPost(CreateSummary, "");
-        group.MapGet(GetSummaries, "");
+        group.MapPost<CreateSummary, GetSummary>(CreateSummary, "");
+        group.MapGet<List<GetSummary>>(GetSummaries, "");
     }
 
     private async Task<IResult> CreateSummary(
@@ -35,8 +33,7 @@ public class Summaries : EndpointGroupBase
 
             var summary = Summary.Create(
                 name,
-                duration,
-                null
+                duration
             );
 
             context.Summaries.Add(summary);
