@@ -4,5 +4,6 @@ public sealed record GetCurrency(
     int Id,
     string Name,
     string Symbol,
-    string Code
+    string Code,
+    bool IsDefault
 );

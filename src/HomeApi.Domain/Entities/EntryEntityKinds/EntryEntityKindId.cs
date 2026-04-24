@@ -1,6 +1,6 @@
 namespace HomeApi.Domain.Entities.EntryEntityKinds;
 
-public record EntryEntityKindId : StronglyTypedId<EntryEntityKindId, int>, ICreateId<EntryEntityKindId, int>
+public record EntryEntityKindId : StronglyTypedId<EntryEntityKindId, short>, ICreateId<EntryEntityKindId, short>
 {
     private EntryEntityKindId() { }
     
@@ -9,7 +9,7 @@ public record EntryEntityKindId : StronglyTypedId<EntryEntityKindId, int>, ICrea
         return new EntryEntityKindId { Value = default };
     }
 
-    public static EntryEntityKindId Create(int value)
+    public static EntryEntityKindId Create(short value)
     {
         return new EntryEntityKindId { Value = value };
     }

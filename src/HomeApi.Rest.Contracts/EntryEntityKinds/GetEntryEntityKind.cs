@@ -1,7 +1,9 @@
 namespace HomeApi.Rest.Contracts.EntryEntityKinds;
 
 public sealed record GetEntryEntityKind(
-    Guid Id,
+    int Id,
     string Name,
-    int EntryKind
+    int EntryKind,
+    string Icon,
+    string Color
 );

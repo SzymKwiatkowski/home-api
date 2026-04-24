@@ -1,4 +1,5 @@
 using HomeApi.Application.Common.Interfaces;
+using HomeApi.Domain.Entities.Currencies;
 using HomeApi.Domain.Entities.Currencies.ValueObjects;
 using Currency = HomeApi.Domain.Entities.Currencies.Currency;
 using MapsterMapper;
@@ -16,6 +17,7 @@ public class Currencies : EndpointGroupBase
 
         group.MapPost<CreateCurrency, int>(CreateCurrency, "");
         group.MapGet<List<GetCurrency>>(GetCurrencies, "");
+        group.MapPut<List<Currencies>>(SetAsDefault, "{id:int}");
         group.MapDelete<DeleteCurrency, int>(DeleteCurrency, "{id:int}");
     }
 
@@ -59,6 +61,34 @@ public class Currencies : EndpointGroupBase
         catch (Exception ex)
         {
             return Task.FromResult(Results.BadRequest(new { error = ex.Message }));
+        }
+    }
+
+    private async Task<IResult> SetAsDefault(
+        int id,
+        IApplicationDbContext context,
+        IMapper mapper,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var currencyId = CurrencyId.Create(id);
+
+            var currencies = await context.Currencies.ToListAsync(cancellationToken);
+
+            foreach (var currency in currencies)
+            {
+                currency.SetAsDefault(currencyId);
+            }
+
+            await context.SaveChangesAsync(cancellationToken);
+            
+            var response = mapper.Map<List<GetCurrency>>(currencies);
+            return Results.Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(new { error = ex.Message });
         }
     }
 

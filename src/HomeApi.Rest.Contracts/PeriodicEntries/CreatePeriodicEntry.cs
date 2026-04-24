@@ -6,5 +6,7 @@ public sealed record CreatePeriodicEntry(
     string Name,
     decimal? Amount,
     bool IsActive,
+    short EntryEntityKindId,
+    int EntryKind,
     List<string> UserIds
 );

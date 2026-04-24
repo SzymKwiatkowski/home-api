@@ -10,6 +10,8 @@ public class EntryEntityKindMappingProfile : IRegister
         config.NewConfig<EntryEntityKind, GetEntryEntityKind>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.Name, src => src.Name.Value)
-            .Map(dest => dest.EntryKind, src => (int)src.EntryKind);
+            .Map(dest => dest.EntryKind, src => src.EntryKind.Value)
+            .Map(dest => dest.Color,  src => src.Color.Value)
+            .Map(dest => dest.Icon, src => src.Emoji.Value);
     }
 }

@@ -1,9 +1,11 @@
 using HomeApi.Application.Common.Interfaces;
+using HomeApi.Domain.Entities.EntryEntityKinds;
 using HomeApi.Domain.Enums;
 using HomeApi.Domain.ValueObjects;
 using HomeApi.Rest.Contracts.EntryEntityKinds;
 using EntryEntityKind = HomeApi.Domain.Entities.EntryEntityKinds.EntryEntityKind;
 using MapsterMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeApi.Web.Endpoints;
 
@@ -27,11 +29,20 @@ public class EntryEntityKinds : EndpointGroupBase
         {
             var entryKind = (EntryKind)request.EntryKind;
             
+
+            var entryEntityKindsMaxId = context.EntryEntityKinds.AsNoTracking()
+                .Where(x => x.EntryKind == entryKind)
+                .Max(x => x.Id);
+            
             var kind = EntryEntityKind.Create(
                 Name.Create(request.Name),
-                entryKind
+                entryKind,
+                Emoji.Create(request.Icon),
+                Color.Create(request.Color),
+                EntryEntityKindId.Create(entryEntityKindsMaxId?.Value ?? 
+                                         (short)((400 * (entryKind.Value-1)) + 1))
             );
-
+            
             context.EntryEntityKinds.Add(kind);
             await context.SaveChangesAsync(cancellationToken);
 

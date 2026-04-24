@@ -11,6 +11,7 @@ public class CurrencyMappingProfile : IRegister
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.Name, src => src.Name.Value)
             .Map(dest => dest.Code, src => src.Code.Value)
-            .Map(dest => dest.Symbol, src => src.Symbol.Value);
+            .Map(dest => dest.Symbol, src => src.Symbol.Value)
+            .Map(dest => dest.IsDefault, src => src.IsDefault.Value);
     }
 }

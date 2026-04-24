@@ -25,6 +25,18 @@ public static class ConventionsConfigurations
             : base(v => v.Value, v => Name.Create(v)) { }
     }
     
+    internal class EmojiConverter : ValueConverter<Emoji, string>
+    {
+        public EmojiConverter()
+            : base(v => v.Value, v => Emoji.Create(v)) { }
+    }
+    
+    internal class ColorConverter : ValueConverter<Color, string>
+    {
+        public ColorConverter()
+            : base(v => v.Value, v => Color.Create(v)) { }
+    }
+    
     internal class DescriptionConverter : ValueConverter<Description?, string?>
     {
         public DescriptionConverter()

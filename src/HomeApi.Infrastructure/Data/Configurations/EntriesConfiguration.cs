@@ -26,12 +26,12 @@ public class EntriesConfiguration : IEntityTypeConfiguration<Entry>
     private static void ConfigureEntriesUsers(EntityTypeBuilder<Entry> builder)
     {
         builder
-            .HasMany("_users")
+            .HasMany<ApplicationUser>("_users")
             .WithMany()
             .UsingEntity(
-                "users_events",
-                l => l.HasOne(typeof(ApplicationUser)).WithMany().HasForeignKey("user_id"),
-                r => r.HasOne(typeof(Entry)).WithMany().HasForeignKey(nameof(EntryId).ToSnakeCase()),
+                "entries_users",                
+                r => r.HasOne(typeof(ApplicationUser)).WithMany().HasForeignKey("user_id"),
+                l => l.HasOne(typeof(Entry)).WithMany().HasForeignKey(nameof(EntryId).ToSnakeCase()),
                 j => j.HasKey(nameof(EntryId).ToSnakeCase(), "user_id")
             );
     }

@@ -3,5 +3,7 @@ namespace HomeApi.Rest.Contracts.EntryEntityKinds;
 
 public sealed record CreateEntryEnityKind(
     string Name,
-    int EntryKind
+    int EntryKind,
+    string Icon,
+    string Color
 );

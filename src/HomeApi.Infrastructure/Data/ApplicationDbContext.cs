@@ -12,15 +12,14 @@ using HomeApi.Infrastructure.Data.Configurations;
 using HomeApi.Infrastructure.Data.Extensions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SmartEnum.EFCore;
 
 namespace HomeApi.Infrastructure.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    : IdentityDbContext<ApplicationUser>(options), IApplicationDbContext
 {
-    public const string Schema = "home_app";
-
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options) { }
+    private const string Schema = "home_app";
 
     public DbSet<Entry> Entries => Set<Entry>();
 
@@ -31,6 +30,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<EntryEntityKind> EntryEntityKinds => Set<EntryEntityKind>();
 
     public DbSet<PeriodicEntry> PeriodicEntries => Set<PeriodicEntry>();
+    
+    public DbSet<ApplicationUser>  ApplicationUsers => Set<ApplicationUser>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -45,14 +46,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         base.ConfigureConventions(configurationBuilder);
+        
+        configurationBuilder.ConfigureSmartEnum();
 
         configurationBuilder
             .Properties<DateTimeOffset>()
             .HaveConversion<ConventionsConfigurations.DateTimeOffsetToTimestampConverter>();
 
         configurationBuilder.Properties<OccuredAtOnUtc>().HaveConversion<ConventionsConfigurations.OccuredAtOnUtcConverter>();
-        configurationBuilder.Properties<EntryKind>().HaveConversion<ConventionsConfigurations.EntryKindConverter>();
+        // configurationBuilder.Properties<EntryKind>().HaveConversion<ConventionsConfigurations.EntryKindConverter>();
         configurationBuilder.Properties<Name>().HaveConversion<ConventionsConfigurations.NameConverter>();
+        configurationBuilder.Properties<Color>().HaveConversion<ConventionsConfigurations.ColorConverter>();
+        configurationBuilder.Properties<Emoji>().HaveConversion<ConventionsConfigurations.EmojiConverter>();
         configurationBuilder.Properties<Description?>().HaveConversion<ConventionsConfigurations.DescriptionConverter>();
         configurationBuilder.Properties<IsActive>().HaveConversion<ConventionsConfigurations.IsActiveConverter>();
         configurationBuilder.Properties<IsCompleted>().HaveConversion<ConventionsConfigurations.IsCompletedConverter>();

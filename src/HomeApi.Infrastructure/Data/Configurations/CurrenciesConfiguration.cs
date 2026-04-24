@@ -1,5 +1,6 @@
 using HomeApi.Domain.Entities.Currencies;
 using HomeApi.Domain.Entities.Currencies.ValueObjects;
+using HomeApi.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -27,5 +28,10 @@ public class CurrenciesConfiguration : IEntityTypeConfiguration<Currency>
             .HasConversion(
                 symbol => symbol.Value,
                 value => Symbol.Create(value));
+
+        builder.Property(x => x.IsDefault)
+            .HasConversion(
+                isDefault => isDefault.Value,
+                value => IsDefault.Create(value));
     }
 }

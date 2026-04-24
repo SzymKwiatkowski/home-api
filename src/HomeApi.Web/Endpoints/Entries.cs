@@ -1,3 +1,4 @@
+using HomeApi.Application.Common.Interfaces;
 using Mapster;
 using HomeApi.Application.Repositories;
 using HomeApi.Domain.Entities.EntryEntityKinds;
@@ -6,6 +7,7 @@ using HomeApi.Domain.Enums;
 using HomeApi.Domain.ValueObjects;
 using HomeApi.Rest.Contracts.Entries;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Entry = HomeApi.Domain.Entities.Entries.Entry;
 
 namespace HomeApi.Web.Endpoints;
@@ -24,6 +26,7 @@ public class Entries : EndpointGroupBase
     private async Task<IResult> CreateEntry(
         CreateEntry request,
         IEntriesRepository repository,
+        IApplicationDbContext context,
         CancellationToken cancellationToken)
     {
         try
@@ -36,22 +39,26 @@ public class Entries : EndpointGroupBase
                 ? Description.Create(request.Description)
                 : null;
 
-            var entryEntityKindId = request.EntryEntityKindId.HasValue
-                ? EntryEntityKindId.Create(request.EntryEntityKindId.Value)
-                : null;
+            var entryKind = EntryKind.FromValue(request.EntryKind);
+            
+            var users = await context.ApplicationUsers
+                .Where(x => request.UserIds.Contains(x.Id))
+                .ToListAsync(cancellationToken);
 
-            var entryKind = request.EventKind > 0
-                ? (EntryKind)request.EventKind
-                : null;
+            if (request.UserIds.Count != users.Count)
+            {
+                return Results.BadRequest(new { error = "Users count mismatch" });
+            }
 
             var entry = Entry.Create(
                 Name.Create(request.Name),
                 amount,
                 OccuredAtOnUtc.Create(request.OccuredAtOnUtc),
-                request.UserIds,
-                description,
-                entryEntityKindId,
-                entryKind
+                users,
+                EntryEntityKindId.Create(request.EntryEntityKindId),
+                IsCompleted.Create(request.IsCompleted),
+                entryKind,
+                description
             );
 
             var result = await repository.AddAsync(entry, cancellationToken);
@@ -60,6 +67,8 @@ public class Entries : EndpointGroupBase
             {
                 return Results.BadRequest(new { error = result.Error });
             }
+            
+            await context.SaveChangesAsync(cancellationToken);
 
             var response = entry.Adapt<GetEntry>();
             return Results.Created($"/api/entries/{entry.Id}", response);
@@ -110,6 +119,7 @@ public class Entries : EndpointGroupBase
     private async Task<IResult> ToggleEntry(
         Guid id,
         IEntriesRepository repository,
+        IApplicationDbContext context,
         CancellationToken cancellationToken)
     {
         try
@@ -132,6 +142,8 @@ public class Entries : EndpointGroupBase
                 return Results.BadRequest(new { error = updateResult.Error });
             }
 
+            await context.SaveChangesAsync(cancellationToken);
+            
             var response = entry.Adapt<GetEntry>();
             return Results.Ok(response);
         }

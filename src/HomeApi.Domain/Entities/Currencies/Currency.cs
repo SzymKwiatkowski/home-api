@@ -15,6 +15,8 @@ public class Currency : BaseAuditableEntity<CurrencyId>
     // eg. United States Dollar, Polski złoty
     public Name Name { get; private set; } = null!;
 
+    public IsDefault IsDefault { get; private set; } = null!;
+
     public static Currency Create(Code code, Symbol symbol, Name name, CurrencyId? id = null)
     {
         code.ThrowIfNull();
@@ -28,5 +30,10 @@ public class Currency : BaseAuditableEntity<CurrencyId>
             Symbol = symbol,
             Name = name,
         };
+    }
+    
+    public void SetAsDefault(CurrencyId id)
+    {
+        IsDefault = id.Value == Id.Value ? IsDefault.True : IsDefault.False;
     }
 }

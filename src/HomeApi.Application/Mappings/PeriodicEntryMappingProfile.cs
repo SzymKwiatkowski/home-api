@@ -14,6 +14,8 @@ public class PeriodicEntryMappingProfile : IRegister
             .Map(dest => dest.Name, src => src.Name.Value)
             .Map(dest => dest.Amount, src => src.Amount == null ? (decimal?)null : (decimal?)src.Amount.Value)
             .Map(dest => dest.IsActive, src => src.IsActive.Value)
+            .Map(dest => dest.EntryEntityKindId, src => src.EntryEntityKindId.Value)
+            .Map(dest => dest.EntryKind, src => src.EntryKind.Value)
             .Map(dest => dest.UserIds, src => src.UserIds.ToList());
     }
 }

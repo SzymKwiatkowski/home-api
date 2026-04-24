@@ -1,4 +1,5 @@
-﻿using HomeApi.Domain.Entities.Currencies;
+﻿using HomeApi.Domain.Entities.ApplicationUsers;
+using HomeApi.Domain.Entities.Currencies;
 using HomeApi.Domain.Entities.Entries;
 using HomeApi.Domain.Entities.EntryEntityKinds;
 using HomeApi.Domain.Entities.PeriodicEntries;
@@ -17,6 +18,8 @@ public interface IApplicationDbContext
     DbSet<Currency> Currencies { get; }
 
     DbSet<PeriodicEntry> PeriodicEntries { get; }
+    
+    DbSet<ApplicationUser> ApplicationUsers { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -1,11 +1,12 @@
 namespace HomeApi.Rest.Contracts.Entries;
 
 public sealed record CreateEntry(
-    int EventKind,
+    int EntryKind,
     string Name,
     decimal? Amount,
     List<string> UserIds,
     DateTimeOffset OccuredAtOnUtc,
+    bool IsCompleted,
     string? Description,
-    int? EntryEntityKindId
+    short EntryEntityKindId
 );

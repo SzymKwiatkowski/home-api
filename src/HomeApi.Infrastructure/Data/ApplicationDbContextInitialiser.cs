@@ -2,6 +2,8 @@
 using HomeApi.Domain.Entities.ApplicationUsers;
 using HomeApi.Domain.Entities.Currencies;
 using HomeApi.Domain.Entities.Currencies.ValueObjects;
+using HomeApi.Domain.Entities.EntryEntityKinds;
+using HomeApi.Domain.Enums;
 using HomeApi.Domain.ValueObjects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -72,7 +74,7 @@ public class ApplicationDbContextInitialiser
         }
     }
 
-    public async Task TrySeedAsync()
+    private async Task TrySeedAsync()
     {
         // Default roles
         var administratorRole = new IdentityRole(Roles.Administrator);
@@ -158,5 +160,155 @@ public class ApplicationDbContextInitialiser
                 
             await _context.SaveChangesAsync(CancellationToken.None);
         }
+
+        if (!await _context.EntryEntityKinds.AnyAsync())
+        {
+            await _context.EntryEntityKinds.AddRangeAsync(ExpensesEntityKinds());
+            await _context.EntryEntityKinds.AddRangeAsync(IncomesEntityKinds());
+            await _context.EntryEntityKinds.AddRangeAsync(EventsEntityKinds());
+
+            await _context.SaveChangesAsync(CancellationToken.None);
+        }
+    }
+
+    private List<EntryEntityKind> ExpensesEntityKinds()
+    {
+        return
+        [
+            EntryEntityKind.Create(
+                Name.Create("Food & Dining"),
+                EntryKind.Expense,
+                Emoji.Create("🍽️"),
+                Color.Create("#e07b39"),
+                EntryEntityKindId.Create(1)),
+
+            EntryEntityKind.Create(
+                Name.Create("Transport"),
+                EntryKind.Expense,
+                Emoji.Create("🚗"),
+                Color.Create("#3b82f6"),
+                EntryEntityKindId.Create(2)),
+
+            EntryEntityKind.Create(
+                Name.Create("Shopping"),
+                EntryKind.Expense,
+                Emoji.Create("🛍️"),
+                Color.Create("#8b5cf6"),
+                EntryEntityKindId.Create(3)),
+
+            EntryEntityKind.Create(
+                Name.Create("Health"),
+                EntryKind.Expense,
+                Emoji.Create("💊"),
+                Color.Create("#10b981"),
+                EntryEntityKindId.Create(4)),
+
+            EntryEntityKind.Create(
+                Name.Create("Entertainment"),
+                EntryKind.Expense,
+                Emoji.Create("🎬"),
+                Color.Create("#e7b394"),
+                EntryEntityKindId.Create(5)),
+
+            EntryEntityKind.Create(
+                Name.Create("Utilities"),
+                EntryKind.Expense,
+                Emoji.Create("💡"),
+                Color.Create("#6b7280"),
+                EntryEntityKindId.Create(6))
+            // EntryEntityKind.Create(
+            //     Name.Create("Eating Out"),
+            //     EntryKind.Expense,
+            //     EntryEntityKindId.Create(7)),
+            // EntryEntityKind.Create(
+            //     Name.Create("Sport"),
+            //     EntryKind.Expense,
+            //     EntryEntityKindId.Create(8)),
+
+        ];
+    }
+    
+    private List<EntryEntityKind> IncomesEntityKinds()
+    {
+        return
+        [
+            EntryEntityKind.Create(
+                Name.Create("Salary"),
+                EntryKind.Income,
+                Emoji.Create("💼"),
+                Color.Create("#2d6a4f"),
+                EntryEntityKindId.Create(401)),
+
+            EntryEntityKind.Create(
+                Name.Create("Freelance"),
+                EntryKind.Income,
+                Emoji.Create("💻"),
+                Color.Create("#0891b2"),
+                EntryEntityKindId.Create(402)),
+
+            EntryEntityKind.Create(
+                Name.Create("Investment"),
+                EntryKind.Income,
+                Emoji.Create("📈"),
+                Color.Create("#7c3aed"),
+                EntryEntityKindId.Create(403)),
+
+            EntryEntityKind.Create(
+                Name.Create("Rental"),
+                EntryKind.Income,
+                Emoji.Create("🏠"),
+                Color.Create("#be185d"),
+                EntryEntityKindId.Create(404)),
+
+            EntryEntityKind.Create(
+                Name.Create("Gift / Bonus"),
+                EntryKind.Income,
+                Emoji.Create("🎁"),
+                Color.Create("#c47a1a"),
+                EntryEntityKindId.Create(405))
+
+        ];
+    }
+    
+    private List<EntryEntityKind> EventsEntityKinds()
+    {
+        return
+        [
+            EntryEntityKind.Create(
+                Name.Create("Meeting"),
+                EntryKind.Event,
+                Emoji.Create("🤝"),
+                Color.Create("#374151"),
+                EntryEntityKindId.Create(801)),
+
+            EntryEntityKind.Create(
+                Name.Create("Medical"),
+                EntryKind.Event,
+                Emoji.Create("🩺"),
+                Color.Create("#dc2626"),
+                EntryEntityKindId.Create(802)),
+
+            EntryEntityKind.Create(
+                Name.Create("Personal"),
+                EntryKind.Event,
+                Emoji.Create("🧘"),
+                Color.Create("#7c3aed"),
+                EntryEntityKindId.Create(803)),
+
+            EntryEntityKind.Create(
+                Name.Create("Travel"),
+                EntryKind.Event,
+                Emoji.Create("✈️"),
+                Color.Create("#0891b2"),
+                EntryEntityKindId.Create(804)),
+
+            EntryEntityKind.Create(
+                Name.Create("Social"),
+                EntryKind.Event,
+                Emoji.Create("🎉"),
+                Color.Create("#f59e0b"),
+                EntryEntityKindId.Create(805))
+
+        ];
     }
 }

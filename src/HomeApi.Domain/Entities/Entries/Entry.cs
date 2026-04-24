@@ -9,50 +9,28 @@ namespace HomeApi.Domain.Entities.Entries;
 
 public class Entry : BaseCalendarEntity<EntryId>
 {
-    public Amount? Amount { get; protected set; } = null!;
+    public Amount? Amount { get; private set; } = null!;
     
-    public EntryEntityKindId? EntryEntityKindId { get; protected set; } = null!;
+    public EntryEntityKindId EntryEntityKindId { get; private set; } = null!;
     
-    public EntryKind EntryKind { get; protected set; } = null!;
+    public EntryKind EntryKind { get; private set; } = null!;
 
-    protected readonly List<ApplicationUser> _users = new();
+    private readonly List<ApplicationUser> _users = new();
     
     [NotMapped]
-    public IReadOnlyList<ApplicationUser> Users => _users;
+    public IReadOnlyList<string> UserIds => _users.Select(u => u.Id).ToList();
 
-    public IsCompleted IsCompleted { get; protected set; } = null!;
-
-    public static Entry Create(
-        Name name,
-        Amount? amount,
-        OccuredAtOnUtc occuredAtOnUtc,
-        EntryId? id = null
-    )
-    {
-        GuardExtensions.Null(name, occuredAtOnUtc);
-
-        var entry = new Entry
-        {
-            Id = id ?? EntryId.New(),
-            Name = name,
-            Amount = amount,
-            OccuredAtOnUtc = occuredAtOnUtc,
-            EntryKind = MapKindBasedOnAmount(amount),
-            Description = null,
-            IsCompleted = IsCompleted.False,
-        };
-
-        return entry;
-    }
+    public IsCompleted IsCompleted { get; private set; } = null!;
 
     public static Entry Create(
         Name name,
         Amount? amount,
         OccuredAtOnUtc occuredAtOnUtc,
-        List<string> userIds,
+        List<ApplicationUser> users,
+        EntryEntityKindId entryEntityKindId,
+        IsCompleted isCompleted,
+        EntryKind entryKind,
         Description? description = null,
-        EntryEntityKindId? entryEntityKindId = null,
-        EntryKind? entryKind = null,
         EntryId? id = null
     )
     {
@@ -64,22 +42,37 @@ public class Entry : BaseCalendarEntity<EntryId>
             Name = name,
             Amount = amount,
             OccuredAtOnUtc = occuredAtOnUtc,
-            EntryKind = entryKind ?? MapKindBasedOnAmount(amount),
+            EntryKind = entryKind,
             Description = description,
             EntryEntityKindId = entryEntityKindId,
-            IsCompleted = IsCompleted.False,
+            IsCompleted = isCompleted,
         };
 
-        entry._users.AddRange(userIds.Select(id => new ApplicationUser { Id = id }));
+        foreach (var user in users)
+        {
+            entry.AddUser(user);
+        }
 
         return entry;
     }
 
-    public void AddUser(string userId)
+    public void AddUser(ApplicationUser user)
     {
-        if (!string.IsNullOrEmpty(userId) && !_users.Contains(new ApplicationUser { Id = userId }))
+        if (_users.Any(x => x.Id == user.Id))
         {
-            _users.Add(new ApplicationUser { Id = userId });
+            return;
+        }
+        
+        _users.Add(user);
+    }
+
+    public void SetUsers(List<ApplicationUser> users)
+    {
+        _users.Clear();
+
+        foreach (var user in users)
+        {
+            AddUser(user);
         }
     }
 
@@ -88,7 +81,7 @@ public class Entry : BaseCalendarEntity<EntryId>
         Description = description;
     }
 
-    public void SetEntryEntityKind(EntryEntityKindId? entryEntityKindId)
+    public void SetEntryEntityKind(EntryEntityKindId entryEntityKindId)
     {
         EntryEntityKindId = entryEntityKindId;
     }
@@ -101,16 +94,5 @@ public class Entry : BaseCalendarEntity<EntryId>
     public void ToggleCompletion()
     {
         IsCompleted = IsCompleted.Value ? IsCompleted.False : IsCompleted.True;
-    }
-
-    private static EntryKind MapKindBasedOnAmount(Amount? amount)
-    {
-        return amount?.Value switch
-        {
-            null => EntryKind.Event,
-            > 0 => EntryKind.Income,
-            < 0 => EntryKind.Payment,
-            _ => throw new ArgumentException("Amount cannot be zero for an entry.")
-        };
     }
 }
