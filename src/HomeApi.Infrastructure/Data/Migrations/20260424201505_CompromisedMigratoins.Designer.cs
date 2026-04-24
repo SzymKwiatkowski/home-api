@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeApi.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260422190202_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20260424201505_CompromisedMigratoins")]
+    partial class CompromisedMigratoins
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("home_app")
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -126,6 +126,10 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("created_by");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_default");
+
                     b.Property<long>("LastModified")
                         .HasColumnType("bigint")
                         .HasColumnName("last_modified");
@@ -176,8 +180,8 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<int?>("EntryEntityKindId")
-                        .HasColumnType("integer")
+                    b.Property<short>("EntryEntityKindId")
+                        .HasColumnType("smallint")
                         .HasColumnName("entry_entity_kind_id");
 
                     b.Property<int>("EntryKind")
@@ -220,9 +224,14 @@ namespace HomeApi.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("HomeApi.Domain.Entities.EntryEntityKinds.EntryEntityKind", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer")
+                    b.Property<short>("Id")
+                        .HasColumnType("smallint")
                         .HasColumnName("id");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("color");
 
                     b.Property<long>("Created")
                         .HasColumnType("bigint")
@@ -231,6 +240,11 @@ namespace HomeApi.Infrastructure.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text")
                         .HasColumnName("created_by");
+
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("emoji");
 
                     b.Property<int>("EntryKind")
                         .HasColumnType("integer")
@@ -281,6 +295,14 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<short>("EntryEntityKindId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("entry_entity_kind_id");
+
+                    b.Property<int>("EntryKind")
+                        .HasColumnType("integer")
+                        .HasColumnName("entry_kind");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
@@ -307,7 +329,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("period_definition");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Duration", "HomeApi.Domain.Entities.PeriodicEntries.PeriodicEntry.Duration#Duration", b1 =>
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Duration", "HomeApi.Domain.Entities.PeriodicEntries.PeriodicEntry.Duration#Duration", b1 =>
                         {
                             b1.IsRequired();
 
@@ -369,7 +391,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("overall_amount");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Duration", "HomeApi.Domain.Entities.Summaries.Summary.Duration#Duration", b1 =>
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Duration", "HomeApi.Domain.Entities.Summaries.Summary.Duration#Duration", b1 =>
                         {
                             b1.IsRequired();
 
@@ -556,6 +578,44 @@ namespace HomeApi.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", "home_app");
                 });
 
+            modelBuilder.Entity("entries_users", b =>
+                {
+                    b.Property<Guid>("entry_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("entry_id");
+
+                    b.Property<string>("user_id")
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("entry_id", "user_id")
+                        .HasName("pk_entries_users");
+
+                    b.HasIndex("user_id")
+                        .HasDatabaseName("ix_entries_users_user_id");
+
+                    b.ToTable("entries_users", "home_app");
+                });
+
+            modelBuilder.Entity("periodic_entries_users", b =>
+                {
+                    b.Property<Guid>("periodic_entry_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("periodic_entry_id");
+
+                    b.Property<string>("user_id")
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("periodic_entry_id", "user_id")
+                        .HasName("pk_periodic_entries_users");
+
+                    b.HasIndex("user_id")
+                        .HasDatabaseName("ix_periodic_entries_users_user_id");
+
+                    b.ToTable("periodic_entries_users", "home_app");
+                });
+
             modelBuilder.Entity("summaries_entries", b =>
                 {
                     b.Property<Guid>("SummaryId")
@@ -582,30 +642,13 @@ namespace HomeApi.Infrastructure.Data.Migrations
                     b.ToTable("summaries_entries", "home_app");
                 });
 
-            modelBuilder.Entity("users_events", b =>
-                {
-                    b.Property<Guid>("entry_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("entry_id");
-
-                    b.Property<string>("user_id")
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("entry_id", "user_id")
-                        .HasName("pk_users_events");
-
-                    b.HasIndex("user_id")
-                        .HasDatabaseName("ix_users_events_user_id");
-
-                    b.ToTable("users_events", "home_app");
-                });
-
             modelBuilder.Entity("HomeApi.Domain.Entities.Entries.Entry", b =>
                 {
                     b.HasOne("HomeApi.Domain.Entities.EntryEntityKinds.EntryEntityKind", null)
                         .WithMany()
                         .HasForeignKey("EntryEntityKindId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_entries_entry_entity_kinds_entry_entity_kind_id");
                 });
 
@@ -666,6 +709,40 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
                 });
 
+            modelBuilder.Entity("entries_users", b =>
+                {
+                    b.HasOne("HomeApi.Domain.Entities.Entries.Entry", null)
+                        .WithMany()
+                        .HasForeignKey("entry_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_entries_users_entries_entry_id");
+
+                    b.HasOne("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_entries_users_asp_net_users_user_id");
+                });
+
+            modelBuilder.Entity("periodic_entries_users", b =>
+                {
+                    b.HasOne("HomeApi.Domain.Entities.PeriodicEntries.PeriodicEntry", null)
+                        .WithMany()
+                        .HasForeignKey("periodic_entry_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_periodic_entries_users_periodic_entries_periodic_entry_id");
+
+                    b.HasOne("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_periodic_entries_users_asp_net_users_user_id");
+                });
+
             modelBuilder.Entity("summaries_entries", b =>
                 {
                     b.HasOne("HomeApi.Domain.Entities.Entries.Entry", null)
@@ -688,23 +765,6 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_summaries_entries_entries__entries_id");
-                });
-
-            modelBuilder.Entity("users_events", b =>
-                {
-                    b.HasOne("HomeApi.Domain.Entities.Entries.Entry", null)
-                        .WithMany()
-                        .HasForeignKey("entry_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_users_events_entries_entry_id");
-
-                    b.HasOne("HomeApi.Domain.Entities.ApplicationUsers.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_users_events_asp_net_users_user_id");
                 });
 #pragma warning restore 612, 618
         }

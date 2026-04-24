@@ -17,7 +17,12 @@ public class Currency : BaseAuditableEntity<CurrencyId>
 
     public IsDefault IsDefault { get; private set; } = null!;
 
-    public static Currency Create(Code code, Symbol symbol, Name name, CurrencyId? id = null)
+    public static Currency Create(
+        Code code,
+        Symbol symbol,
+        Name name,
+        CurrencyId? id = null,
+        IsDefault? isDefault = null)
     {
         code.ThrowIfNull();
         symbol.ThrowIfNull();
@@ -29,6 +34,7 @@ public class Currency : BaseAuditableEntity<CurrencyId>
             Code = code,
             Symbol = symbol,
             Name = name,
+            IsDefault = isDefault ??  IsDefault.False,
         };
     }
     

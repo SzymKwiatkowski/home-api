@@ -108,7 +108,8 @@ public class ApplicationDbContextInitialiser
                     Code.Create("PLN"),
                     Symbol.Create("zł"),
                     Name.Create("Polish złoty"),
-                    CurrencyId.Create(1)),
+                    CurrencyId.Create(1),
+                    IsDefault.True),
                 Currency.Create(
                     Code.Create("USB"),
                     Symbol.Create("$"),

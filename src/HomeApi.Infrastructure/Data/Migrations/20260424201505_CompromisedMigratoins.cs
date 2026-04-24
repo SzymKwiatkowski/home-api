@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeApi.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class CompromisedMigratoins : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,6 +65,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
                     code = table.Column<string>(type: "text", nullable: false),
                     symbol = table.Column<string>(type: "text", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
+                    is_default = table.Column<bool>(type: "boolean", nullable: false),
                     created = table.Column<long>(type: "bigint", nullable: false),
                     created_by = table.Column<string>(type: "text", nullable: true),
                     last_modified = table.Column<long>(type: "bigint", nullable: false),
@@ -80,9 +81,11 @@ namespace HomeApi.Infrastructure.Data.Migrations
                 schema: "home_app",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false),
+                    id = table.Column<short>(type: "smallint", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     entry_kind = table.Column<int>(type: "integer", nullable: false),
+                    emoji = table.Column<string>(type: "text", nullable: false),
+                    color = table.Column<string>(type: "text", nullable: false),
                     created = table.Column<long>(type: "bigint", nullable: false),
                     created_by = table.Column<string>(type: "text", nullable: true),
                     last_modified = table.Column<long>(type: "bigint", nullable: false),
@@ -102,6 +105,8 @@ namespace HomeApi.Infrastructure.Data.Migrations
                     occured_at_on_utc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     period_definition = table.Column<string>(type: "text", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
+                    entry_entity_kind_id = table.Column<short>(type: "smallint", nullable: false),
+                    entry_kind = table.Column<int>(type: "integer", nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
                     amount = table.Column<decimal>(type: "numeric", nullable: true),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
@@ -263,7 +268,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     amount = table.Column<decimal>(type: "numeric", nullable: true),
-                    entry_entity_kind_id = table.Column<int>(type: "integer", nullable: true),
+                    entry_entity_kind_id = table.Column<short>(type: "smallint", nullable: false),
                     entry_kind = table.Column<int>(type: "integer", nullable: false),
                     is_completed = table.Column<bool>(type: "boolean", nullable: false),
                     created = table.Column<long>(type: "bigint", nullable: false),
@@ -282,7 +287,62 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         column: x => x.entry_entity_kind_id,
                         principalSchema: "home_app",
                         principalTable: "entry_entity_kinds",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "periodic_entries_users",
+                schema: "home_app",
+                columns: table => new
+                {
+                    periodic_entry_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_periodic_entries_users", x => new { x.periodic_entry_id, x.user_id });
+                    table.ForeignKey(
+                        name: "fk_periodic_entries_users_asp_net_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "home_app",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_periodic_entries_users_periodic_entries_periodic_entry_id",
+                        column: x => x.periodic_entry_id,
+                        principalSchema: "home_app",
+                        principalTable: "periodic_entries",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "entries_users",
+                schema: "home_app",
+                columns: table => new
+                {
+                    entry_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_entries_users", x => new { x.entry_id, x.user_id });
+                    table.ForeignKey(
+                        name: "fk_entries_users_asp_net_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "home_app",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_entries_users_entries_entry_id",
+                        column: x => x.entry_id,
+                        principalSchema: "home_app",
+                        principalTable: "entries",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -316,33 +376,6 @@ namespace HomeApi.Infrastructure.Data.Migrations
                         column: x => x.summary_id,
                         principalSchema: "home_app",
                         principalTable: "summaries",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "users_events",
-                schema: "home_app",
-                columns: table => new
-                {
-                    entry_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    user_id = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_users_events", x => new { x.entry_id, x.user_id });
-                    table.ForeignKey(
-                        name: "fk_users_events_asp_net_users_user_id",
-                        column: x => x.user_id,
-                        principalSchema: "home_app",
-                        principalTable: "AspNetUsers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_users_events_entries_entry_id",
-                        column: x => x.entry_id,
-                        principalSchema: "home_app",
-                        principalTable: "entries",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -412,6 +445,12 @@ namespace HomeApi.Infrastructure.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "ix_entries_users_user_id",
+                schema: "home_app",
+                table: "entries_users",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_entry_entity_kinds_id",
                 schema: "home_app",
                 table: "entry_entity_kinds",
@@ -424,6 +463,12 @@ namespace HomeApi.Infrastructure.Data.Migrations
                 table: "periodic_entries",
                 column: "id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_periodic_entries_users_user_id",
+                schema: "home_app",
+                table: "periodic_entries_users",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_summaries_id",
@@ -443,12 +488,6 @@ namespace HomeApi.Infrastructure.Data.Migrations
                 schema: "home_app",
                 table: "summaries_entries",
                 column: "entry_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_users_events_user_id",
-                schema: "home_app",
-                table: "users_events",
-                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -479,7 +518,11 @@ namespace HomeApi.Infrastructure.Data.Migrations
                 schema: "home_app");
 
             migrationBuilder.DropTable(
-                name: "periodic_entries",
+                name: "entries_users",
+                schema: "home_app");
+
+            migrationBuilder.DropTable(
+                name: "periodic_entries_users",
                 schema: "home_app");
 
             migrationBuilder.DropTable(
@@ -487,15 +530,7 @@ namespace HomeApi.Infrastructure.Data.Migrations
                 schema: "home_app");
 
             migrationBuilder.DropTable(
-                name: "users_events",
-                schema: "home_app");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles",
-                schema: "home_app");
-
-            migrationBuilder.DropTable(
-                name: "summaries",
                 schema: "home_app");
 
             migrationBuilder.DropTable(
@@ -503,7 +538,15 @@ namespace HomeApi.Infrastructure.Data.Migrations
                 schema: "home_app");
 
             migrationBuilder.DropTable(
+                name: "periodic_entries",
+                schema: "home_app");
+
+            migrationBuilder.DropTable(
                 name: "entries",
+                schema: "home_app");
+
+            migrationBuilder.DropTable(
+                name: "summaries",
                 schema: "home_app");
 
             migrationBuilder.DropTable(
