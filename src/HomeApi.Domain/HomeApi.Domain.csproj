@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>HomeApi.Domain</RootNamespace>
+    <AssemblyName>HomeApi.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" />
+    <PackageReference Include="Azure.Identity" />
+    <PackageReference Include="Ardalis.SmartEnum" />
+    <PackageReference Include="CSharpFunctionalExtensions.StrongName" />
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Minerals.StringCases" />
+    <PackageReference Include="NewId" />
+    <PackageReference Include="Throw" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities/Entries/" />
+  </ItemGroup>
+
+</Project>
